@@ -1,0 +1,5 @@
+*.pyc
+*~
+
+training1.h5
+LGNumberNetworkModel.h5

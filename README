@@ -1,0 +1,155 @@
+* Input creation
+
+setupATLAS
+cd /lcg/storage15/atlas/gagnon/work/2017-11-16_ITk_dev
+mkdir source build run
+cd source
+asetup AthDerivation,21.2.11.0,here
+git clone --branch dev ssh://git@gitlab.cern.ch:7999/lgagnon/pixel-NN.git
+cd ../build
+cmake ../source
+make
+source x86_64-slc6-gcc62-opt/setup.sh
+cd ../run
+athena PixelNN/NNinput_number.py --filesInput path/to/input.root
+athena PixelNN/NNinput_pos1.py --filesInput path/to/input.root
+athena PixelNN/NNinput_pos2.py --filesInput path/to/input.root
+athena PixelNN/NNinput_pos3.py --filesInput path/to/input.root
+
+# There are a number of "user options", that is, options specified after
+# a single '-':
+athena PixelNN/NNinput.py --filesInput foo.root -
+       --output bar.root <-- set alternate output
+       --type number <-- specify network type explicitely
+       --max-clusters 5000000 <-- maximum number of clusters in output
+       --fractions [0.3, 0.3, 0.4] <-- (number) fractions of [1, 2, 3]-p clusters
+       --seed 123 <-- seed for number input shuffling. 0 to turn off.
+       --ttrained path.root <-- file with TTrainedNetworks, for error NN input. (see below)
+
+
+To use a whole directory as input, use a quoted glob expression, as in
+--filesInput "path/to/dataset/*.root". The expression will be expanded
+within athena.
+
+To split in training and test subdatasets, use the "rooteventselector"
+utility, packaged with ROOT version >=6.06:
+
+rooteventselector --first 0 --last 12000000 full.root:NNinput training.root
+rooteventselector --first 12000000 --last 17000000 full.root:NNinput test.root
+
+* Neural network training
+
+All necessary scripts to train the neural networks are now available
+in this repository, provided that the needed python packages are
+installed:
+
+- keras
+- h5py
+- root_numpy (for .root -> .h5 conversion only)
+
+The training is driven by the the run_training.py script:
+
+$ run_training.py --input my_dataset.h5 --model my_model.py --name clever_name
+
+The --input option takes the path to an h5 file with 'input' and
+'target' datasets (this allows running the training on clusters where
+ROOT is not installed). To convert root data created by the above
+athena algorithm, use the toh5.py script:
+
+$ toh5.py --input data.root --output data.h5 --type number
+
+Where type can be any of the pixel NN types.
+
+The --model option takes a path to a python script containing the
+"build_model(input_data)" function, which itself takes one parameter,
+namely, a numpy array with the data to e.g. compute
+normalization. This function must return:
+  - a keras model object
+  - a dictionnary of options for the ".compile" keras model method
+  - a dictionnary of options for the ".fit" keras model method. Here,
+    do not specify the "x" and "y" options. For the callbacks,
+    TerminateOnNan and ModelCheckpoint are automatically added.
+  - a dictionnary of parameters which will get saved. Useful e.g. if
+    the model is randomly generated, to be able to easily see the
+    chosen parameters without going through the config.
+
+example of a model:
+
+import keras
+import numpy as np
+
+def build_model(data_x):
+    input_node = keras.layers.Input((data_x.shape[0],))
+    nh = np.random.randint(10, 1000)
+    model = keras.layers.Dense(nh, activation='sigmoid')(input_node)
+    model = keras.layers.Dense(1)(model)
+    model = keras.models.Model(inputs=input_node, outputs=model)
+    comp = {
+        'optimizer': 'sgd',
+        'loss': 'mean_squared_error',
+    }
+    fit = {
+        'epochs': 100,
+    }
+    return model, comp, fit, {'n_hidden': nh}
+
+see also the "simple_nn" function in the keras_utils module.
+
+There is a set of reference network models in the share/
+directory. There is code to find these automatically from
+run_training.py, such that you can simply run, for example:
+
+$ run_training.py --input number-training.h5 --model reference_number.py --name number-trained
+
+* error NN input creation
+
+For the error NN you'll need trained position networks. You should
+first collect the trained networks in a single .root files with the
+"collect_networks.py" script, which will take care of the keras ->
+TTrainedNetwork conversion:
+
+$ collect_networks.py --pos1 pos1.h5 --pos2 pos2.h5 --pos3 pos3.h5 --output nn.root
+
+Then run the code to create the position network inputs, but passing
+the root file with the pos nns to the "--ttrained" option. Then the
+resulting input files will also have the required variables for the
+error networks.
+
+* Performance validation
+
+N.B: For examples of validation plots produced in this section, see
+https://atlas.web.cern.ch/Atlas/GROUPS/PHYSICS/PUBNOTES/ATL-PHYS-PUB-2018-002/
+
+Some support for producing validation plots is present.
+
+number:
+$ apply.py --input number-test.root --type number --output number-perf.root --model number-trained.h5
+$ ROC.py --input number-perf.root
+
+ROC.py has an option, "--ITk", which avoids producing separate plots
+for the innermost layer.
+
+position:
+$ apply.py --input pos1-test.root --type pos1 --output pos1-perf.root --model pos1-trained.h5
+$ apply.py --input pos2-test.root --type pos2 --output pos2-perf.root --model pos2-trained.h5
+$ apply.py --input pos3-test.root --type pos3 --output pos3-perf.root --model pos3-trained.h5
+$ draw_residuals_pulls.py pos1-perf.root pos1-figures
+$ draw_residuals_pulls.py pos2-perf.root pos2-figures
+$ draw_residuals_pulls.py pos3-perf.root pos3-figures
+
+When you don't want IBL plots for these, you have to pass the --ITk
+flag to *apply.py* - the splitting is done at an earlier level than in
+the number network validation code. Also, when using the --ITk flag
+for apply.py you likely want to pass in the right pitches via --pitchX
+and --pitchY such that the residuals come out right.
+
+To get some overlaid 2D conditional residuals plots for different
+multiplicities, and produce all the 1D and 2D joint residuals in one
+pass just "hadd" the outputs of apply.py and use that as input to
+draw_residual_pulls.py.
+
+for pull plots, use the --models (note the training 's') option with apply.py:
+$ apply.py --input pos1-test.root --type pos1 --output pos1-perf.root --models pos1-trained.h5 error1x-trained.h5 error1y-trained.h5
+
+The presence of the pull variables should then be automatically picked
+up in draw_residuals_pulls.py.
