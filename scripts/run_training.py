@@ -10,7 +10,9 @@ import h5py as h5
 import keras
 import numpy as np
 
-keras.backend.set_floatx('float32')
+from sklearn.model_selection import KFold
+
+keras.backend.set_floatx('float64')
 
 import sys
 sys.path.append('share')
@@ -66,8 +68,8 @@ def _main():
 
     logging.info('Loading data from %s', args.input)
     data = h5.File(args.input, 'r')
-    data_x = data['input'].value
-    data_y = data['target'].value
+    data_x = data['input'][()]
+    data_y = data['target'][()]
 
     path = _find_py_file(args.model)
     logging.info('Building model from %s', path)
@@ -81,7 +83,7 @@ def _main():
 
     fit_args.setdefault('callbacks', [])
     fit_args['callbacks'] += [
-        #keras.callbacks.TerminateOnNaN(),
+        keras.callbacks.TerminateOnNaN(),
         keras.callbacks.ModelCheckpoint(
             name + '.h5',
             save_best_only=True,
@@ -92,6 +94,10 @@ def _main():
     logging.info('Compiling model')
     model.compile(**compile_args)
 
+    # ------K-Fold Cross Validation------------
+
+    # ---------------------------------------
+
     logging.info('Fitting model')
     fit_args['verbose'] = 2
     history = model.fit(data_x, data_y, **fit_args)
@@ -99,7 +105,7 @@ def _main():
     hpath = name + '.history.h5'
     logging.info('Writing fit history to %s', hpath)
     with h5.File(hpath, 'w') as hfile:
-        for key, val in history.history.iteritems():
+        for key, val in history.history.items():
             hfile.create_dataset(key, data=np.array(val))
 
 

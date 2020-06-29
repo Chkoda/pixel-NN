@@ -1,6 +1,7 @@
 import logging
 import warnings
 
+import tensorflow as tf
 import keras
 import keras.backend as K
 import numpy as np
@@ -76,19 +77,22 @@ def simple_model(data_x,
 def _sigmoid2(x):
     import sys
     MAXEXP = np.log(sys.float_info.max)
-    return K.switch(
+    return tf.where(
         K.greater_equal(-2*x, MAXEXP),
         0.0 * x,
         1.0 / (1.0 + K.exp(-2*x))
     )
 
 
-Sigmoid2 = keras.layers.Activation(_sigmoid2)
+#Sigmoid2 = keras.layers.Activation(_sigmoid2)
+Sigmoid2 = keras.layers.Activation(keras.activations.sigmoid)
 
 
 def _config(layer, config):
     base_config = super(layer.__class__, layer).get_config()
-    return dict(base_config.items() + config.items())
+    conf_dict = dict(base_config.items()).copy()
+    conf_dict.update(dict(config.items()))
+    return conf_dict
 
 
 class OffsetAndScale(keras.layers.Layer):
@@ -137,7 +141,7 @@ class ThresholdEarlyStopping(keras.callbacks.EarlyStopping):
                 warnings.warn('Early stopping requires %s available!' %
                               (self.monitor), RuntimeWarning)
 
-            if self.monitor_op(current, self.best):
+            elif self.monitor_op(current, self.best):
                 if self.monitor_op(current, self.threshold*self.best):
                     self.patience = max(self.patience, epoch * self.increase)
                 self.best = current

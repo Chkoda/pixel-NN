@@ -1,9 +1,6 @@
 #import PixelNN.keras_utils as keras_utils
 import sys
-import os
-sys.path.append('share')
-#os.chdir('share')
-#print(os.getcwd())
+sys.path.append('python')
 import keras_utils
 
 def build_model(data_x, data_y):
