@@ -1,0 +1,3 @@
+cd ...\pixel-NN-master
+
+python scripts/runtraining.py --input training1.h5 --model share/reference_number.py --name testNumberNetwork
