@@ -5,7 +5,10 @@ import argparse
 from importlib.machinery import SourceFileLoader
 import logging
 import os
+
 os.environ['KERAS_BACKEND'] = 'tensorflow'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import tensorflow as tf
 
 import h5py as h5
 import tensorflow.keras as keras
@@ -17,6 +20,18 @@ keras.backend.set_floatx('float32')
 
 
 import datetime
+
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+  try:
+    # Currently, memory growth needs to be the same across GPUs
+    for gpu in gpus:
+      tf.config.experimental.set_memory_growth(gpu, True)
+    logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+    print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+  except RuntimeError as e:
+    # Memory growth must be set before GPUs have been initialized
+    print(e)
 
 def _find_py_file(path):
 
@@ -96,16 +111,16 @@ def _main():
             verbose=2
         )
     ]
-    fit_args['use_multiprocessing'] = True
-    fit_args['workers'] = int(multiprocessing.cpu_count()*0.9)
-    logging.info(f'Fit with cpu count: {fit_args["workers"]}')
 
     logging.info('Compiling model')
     model.compile(**compile_args)
 
     logging.info('Fitting model')
     fit_args['verbose'] = 2
-    history = model.fit(data_x, data_y, **fit_args)
+
+    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x, data_y)).batch(60)
+
+    history = model.fit(trainDataSet, **fit_args)
 
     hpath = name + '.history.h5'
     logging.info('Writing fit history to %s', hpath)

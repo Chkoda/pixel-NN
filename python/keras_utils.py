@@ -24,7 +24,6 @@ def simple_model(data_x,
                  learning_rate,
                  weight_decay,
                  momentum,
-                 minibatch_size,
                  loss_function):
 
     input_node = keras.layers.Input((data_x.shape[1],))
@@ -64,12 +63,10 @@ def simple_model(data_x,
     
 
     fit_args = {
-        'batch_size': minibatch_size,
         'epochs': 1000,
         'callbacks': [
             ThresholdEarlyStopping(verbose=1, min_epochs=50)
-        ],
-        'validation_split': 0.1,
+        ]
     }
 
     return model, compile_args, fit_args, None
