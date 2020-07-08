@@ -3,3 +3,6 @@
 
 training1.h5
 LGNumberNetworkModel.h5
+\logs
+test1.h5
+*.h5
