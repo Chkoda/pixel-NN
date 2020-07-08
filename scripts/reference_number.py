@@ -1,4 +1,8 @@
-import PixelNN.keras_utils as keras_utils
+import os,sys,inspect
+current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parent_dir = os.path.dirname(current_dir)
+sys.path.insert(0, parent_dir)
+import python.keras_utils as keras_utils
 
 def build_model(data_x, data_y):
     return keras_utils.simple_model(

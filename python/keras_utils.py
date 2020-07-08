@@ -6,7 +6,6 @@ import keras
 import keras.backend as K
 import numpy as np
 
-
 def load_model(path):
     return keras.models.load_model(
         path,
@@ -62,11 +61,13 @@ def simple_model(data_x,
         'loss': loss_function
     }
 
+    
+
     fit_args = {
         'batch_size': minibatch_size,
         'epochs': 1000,
         'callbacks': [
-            ThresholdEarlyStopping(verbose=1, min_epochs=50),
+            ThresholdEarlyStopping(verbose=1, min_epochs=50)
         ],
         'validation_split': 0.1,
     }
