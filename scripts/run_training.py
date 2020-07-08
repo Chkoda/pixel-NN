@@ -2,21 +2,19 @@
 """ run_training.py: driver script to train a neural network """
 
 import argparse
-import imp
+from importlib.machinery import SourceFileLoader
 import logging
 import os
 os.environ['KERAS_BACKEND'] = 'tensorflow'
 
 import h5py as h5
-import keras
+import tensorflow.keras as keras
 import numpy as np
+import multiprocessing
 
 from keras.callbacks import TensorBoard
+keras.backend.set_floatx('float32')
 
-keras.backend.set_floatx('float64')
-
-import sys
-sys.path.append('share')
 
 import datetime
 
@@ -39,7 +37,7 @@ def _find_py_file(path):
 
 def _build_model(path, data_x, data_y):
     """ Load a model from a .py source """
-    defm = imp.load_source('model_def', path)
+    defm = SourceFileLoader('model_def', path).load_module()
     if 'build_model' not in dir(defm):
         raise RuntimeError("build_model() function not defined in '%s'" % path)
     buildf = defm.build_model
@@ -70,9 +68,9 @@ def _main():
         name = args.name
 
     logging.info('Loading data from %s', args.input)
-    data = h5.File(args.input, 'r')
-    data_x = data['input'][()]
-    data_y = data['target'][()]
+    with h5.File(args.input, 'r') as hfile:
+        data_x = hfile['input'][()]
+        data_y = hfile['target'][()]
 
     path = _find_py_file(args.model)
     logging.info('Building model from %s', path)
@@ -98,13 +96,12 @@ def _main():
             verbose=2
         )
     ]
+    fit_args['use_multiprocessing'] = True
+    fit_args['workers'] = int(multiprocessing.cpu_count()*0.9)
+    logging.info(f'Fit with cpu count: {fit_args["workers"]}')
 
     logging.info('Compiling model')
     model.compile(**compile_args)
-
-    # ------K-Fold Cross Validation------------
-
-    # ---------------------------------------
 
     logging.info('Fitting model')
     fit_args['verbose'] = 2

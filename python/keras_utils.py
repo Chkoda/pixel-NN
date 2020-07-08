@@ -2,8 +2,8 @@ import logging
 import warnings
 
 import tensorflow as tf
-import keras
-import keras.backend as K
+import tensorflow.keras as keras
+import tensorflow.keras.backend as K
 import numpy as np
 
 def load_model(path):

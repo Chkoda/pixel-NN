@@ -6,3 +6,10 @@ LGNumberNetworkModel.h5
 \logs
 test1.h5
 *.h5
+roc_vals.h5
+slurm_run/runtest.sh
+slurm_run/test.h5
+slurm_run/test.py
+slurm_run/test.txt
+output/roc_vals_1epoch.h5
+output/roc_vals_20epochs.h5
