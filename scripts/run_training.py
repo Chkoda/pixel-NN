@@ -5,17 +5,20 @@ import argparse
 import imp
 import logging
 import os
+os.environ['KERAS_BACKEND'] = 'tensorflow'
 
 import h5py as h5
 import keras
 import numpy as np
 
-from sklearn.model_selection import KFold
+from keras.callbacks import TensorBoard
 
 keras.backend.set_floatx('float64')
 
 import sys
 sys.path.append('share')
+
+import datetime
 
 def _find_py_file(path):
 
@@ -81,13 +84,18 @@ def _main():
         with open(ppath, 'w') as pfile:
             pfile.write(repr(params))
 
+    log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
+
     fit_args.setdefault('callbacks', [])
+    
     fit_args['callbacks'] += [
+        tensorboard_callback,
         keras.callbacks.TerminateOnNaN(),
         keras.callbacks.ModelCheckpoint(
             name + '.h5',
             save_best_only=True,
-            verbose=1
+            verbose=2
         )
     ]
 
