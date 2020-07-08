@@ -15,7 +15,7 @@ import tensorflow.keras as keras
 import numpy as np
 import multiprocessing
 
-from keras.callbacks import TensorBoard
+from tensorflow.keras.callbacks import TensorBoard
 keras.backend.set_floatx('float32')
 
 
@@ -97,7 +97,7 @@ def _main():
         with open(ppath, 'w') as pfile:
             pfile.write(repr(params))
 
-    log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    log_dir = "logs\\fit\\" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "\\"
     tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
 
     fit_args.setdefault('callbacks', [])
@@ -111,6 +111,9 @@ def _main():
             verbose=2
         )
     ]
+    #fit_args['use_multiprocessing'] = True
+    #fit_args['workers'] = int(multiprocessing.cpu_count()*0.9)
+    #logging.info(f'Fit with cpu count: {fit_args["workers"]}')
 
     logging.info('Compiling model')
     model.compile(**compile_args)
