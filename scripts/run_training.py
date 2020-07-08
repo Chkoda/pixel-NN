@@ -9,6 +9,7 @@ import os
 import h5py as h5
 import tensorflow.keras as keras
 import numpy as np
+import multiprocessing
 
 keras.backend.set_floatx('float32')
 
@@ -63,9 +64,9 @@ def _main():
         name = args.name
 
     logging.info('Loading data from %s', args.input)
-    data = h5.File(args.input, 'r')
-    data_x = data['input'][()]
-    data_y = data['target'][()]
+    with h5.File(args.input, 'r') as hfile:
+        data_x = hfile['input'][()]
+        data_y = hfile['target'][()]
 
     path = _find_py_file(args.model)
     logging.info('Building model from %s', path)
@@ -86,6 +87,9 @@ def _main():
             verbose=1
         )
     ]
+    fit_args['use_multiprocessing'] = True
+    fit_args['workers'] = int(multiprocessing.cpu_count()*0.9)
+    logging.info(f'Fit with cpu count: {fit_args["workers"]}')
 
     logging.info('Compiling model')
     model.compile(**compile_args)
