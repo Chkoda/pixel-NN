@@ -1,10 +1,8 @@
 *.pyc
 *~
 
-training1.h5
-LGNumberNetworkModel.h5
+/data
 \logs
-test1.h5
 *.h5
 roc_vals.h5
 slurm_run/runtest.sh
