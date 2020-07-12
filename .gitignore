@@ -11,3 +11,4 @@ slurm_run/test.py
 slurm_run/test.txt
 output/roc_vals_1epoch.h5
 output/roc_vals_20epochs.h5
+output/NumberNetworkKFOLD.h5.bak
