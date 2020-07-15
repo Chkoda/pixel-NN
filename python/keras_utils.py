@@ -82,8 +82,8 @@ def _sigmoid2(x):
     )
 
 
-#Sigmoid2 = keras.layers.Activation(_sigmoid2)
-Sigmoid2 = keras.layers.Activation(keras.activations.sigmoid)
+Sigmoid2 = keras.layers.Activation(_sigmoid2)
+#Sigmoid2 = keras.layers.Activation(keras.activations.sigmoid)
 
 
 def _config(layer, config):

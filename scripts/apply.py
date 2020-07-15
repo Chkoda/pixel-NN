@@ -3,11 +3,16 @@ import argparse
 import logging
 import os
 
-import keras
-import numpy as np
-import root_numpy
+import tensorflow as tf
 
-from PixelNN import keras_utils, utils, validation
+import tensorflow.keras as keras
+import numpy as np
+import h5py as h5
+
+import sys
+sys.path.append('python')
+
+import keras_utils, utils
 
 logging.basicConfig(
     level='INFO',
@@ -25,8 +30,8 @@ def _apply_model(model, nntype, data):
     )
 
     logging.info('Fetching input data for %s', nntype)
-    x_branches, _ = utils.get_branches(nntype)
-    nndata = data[x_branches]
+    #x_branches, _ = utils.get_branches(nntype)
+    nndata = data
 
     logging.info('Applying model to data')
     pred = model.predict(
@@ -61,7 +66,11 @@ def _main():
 
 
     logging.info('Loading data from %s', args.input)
-    data = root_numpy.root2array(args.input, stop=args.max_clusters)
+    with h5.File('data/total.h5', 'r') as data:
+        data_x = data['input'][()]
+        data_y = data['target'][()]
+    
+    #data = root_numpy.root2array(args.input, stop=args.max_clusters)
 
     if args.model:
         models = [args.model]
@@ -72,7 +81,7 @@ def _main():
 
     preds = []
     for model, nntype in zip(models, types):
-        preds.append(_apply_model(model, nntype, data))
+        preds.append(_apply_model(model, nntype, data_x))
 
     if args.output:
         outpath = args.output
@@ -94,12 +103,17 @@ def _main():
         outpath += '.tmp'
 
     logging.info('Saving results to %s', outpath)
-    root_numpy.array2root(
-        outdata,
-        outpath,
-        'NNoutput',
-        'recreate'
-    )
+
+    with h5.File(f'{outpath}/apply_outdata.h5', 'a') as hfile:
+        for key, val in outdata.items():
+            hfile.create_dataset(key, data=np.array(val))
+
+    #root_numpy.array2root(
+    #    outdata,
+    #    outpath,
+    #    'NNoutput',
+    #    'recreate'
+    #)
 
     if args.type.startswith('pos'):
         logging.info(
@@ -125,7 +139,7 @@ def _main():
 ### number NN
 
 
-def _do_number(data, pred, thrs):
+def _do_number(data_x, data_y, pred, thrs):
 
     outdata = np.zeros(
         (pred.shape[0],),
@@ -144,9 +158,9 @@ def _do_number(data, pred, thrs):
     )
 
     outdata['Output_number'] = pred / np.sum(pred, axis=1, keepdims=True)
-    outdata['Output_number_true'] = 1 * data['NN_nparticles1'] + \
-                                    2 * data['NN_nparticles2'] + \
-                                    3 * data['NN_nparticles3']
+    outdata['Output_number_true'] = 1 * data_y[:,0] + \
+                                    2 * data_y[:,1] + \
+                                    3 * data_y[:,2]
 
     outdata['Output_number_estimated'][
         np.where(np.logical_and(pred[:,1] < thrs[0], pred[:,2] < thrs[1]))
@@ -168,8 +182,10 @@ def _do_number(data, pred, thrs):
         'cluster_size_Y'
     ]
 
-    for field in auxfields:
-        outdata[field] = data[field]
+    outdata['NN_layer'] = data_x[:, 56]
+    outdata['NN_barrelEC'] = data_x[:, 57]
+    #for field in auxfields:
+    #    outdata[field] = data_x[field]
 
     return outdata
 
