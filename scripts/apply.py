@@ -11,8 +11,10 @@ import h5py as h5
 
 import sys
 sys.path.append('python')
+sys.path.append('scripts')
 
 import keras_utils, utils
+from run_training import _build_model
 
 logging.basicConfig(
     level='INFO',
@@ -20,22 +22,26 @@ logging.basicConfig(
 )
 
 
-def _apply_model(model, nntype, data):
-    logging.info('Loading %s model from %s', nntype, model)
-    model = keras.models.load_model(
-        model,
-        custom_objects={
-            name: getattr(keras_utils, name) for name in dir(keras_utils)
-        }
-    )
+def _apply_model(path, nntype, data_x, data_y):
+    logging.info('Loading %s model from %s', nntype, path)
+    #model = keras.models.load_model(
+    #    model,
+    #    custom_objects={
+    #        'name': getattr(keras_utils, name) for name in dir(keras_utils)
+    #    }
+    #)
+
+    model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
+    model.compile(**compile_args)
+    model.load_weights(path)
 
     logging.info('Fetching input data for %s', nntype)
     #x_branches, _ = utils.get_branches(nntype)
-    nndata = data
+    nndata = data_x
 
     logging.info('Applying model to data')
     pred = model.predict(
-        nndata.view(np.float64).reshape(nndata.shape + (-1,)).astype(np.float32)
+        nndata
     )
 
     return pred
@@ -81,7 +87,7 @@ def _main():
 
     preds = []
     for model, nntype in zip(models, types):
-        preds.append(_apply_model(model, nntype, data_x))
+        preds.append(_apply_model(model, nntype, data_x, data_y))
 
     if args.output:
         outpath = args.output
@@ -91,7 +97,7 @@ def _main():
 
     if args.type == 'number':
         logging.info('Starting number NN validation results production')
-        outdata = _do_number(data, preds[0], args.number_thresholds)
+        outdata = _do_number(data_x, data_y, preds[0], args.number_thresholds)
     elif args.type.startswith('pos'):
         logging.info('Starting position NN validation results production')
         if args.models:
@@ -105,9 +111,12 @@ def _main():
     logging.info('Saving results to %s', outpath)
 
     with h5.File(f'{outpath}/apply_outdata.h5', 'a') as hfile:
-        for key, val in outdata.items():
-            hfile.create_dataset(key, data=np.array(val))
-
+        for key in outdata.dtype.names:
+            hfile.create_dataset(
+                key,
+                data=outdata[key],
+                compression='gzip'
+            )
     #root_numpy.array2root(
     #    outdata,
     #    outpath,
