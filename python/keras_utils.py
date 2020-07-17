@@ -24,6 +24,7 @@ def simple_model(data_x,
                  learning_rate,
                  weight_decay,
                  momentum,
+                 #minibatch_size,
                  loss_function):
 
     input_node = keras.layers.Input((data_x.shape[1],))
