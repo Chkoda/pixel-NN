@@ -1,0 +1,18 @@
+/global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/scripts/run_training.py:5: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+  import imp
+[2020-07-01 02:29:04,301 INFO] Loading data from /global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/training1.h5
+Traceback (most recent call last):
+  File "/global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/scripts/run_training.py", line 113, in <module>
+    _main()
+  File "/global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/scripts/run_training.py", line 70, in _main
+    data = h5.File(args.input, 'r')
+  File "/usr/common/software/tensorflow/intel-tensorflow/2.2.0-py37/lib/python3.7/site-packages/h5py/_hl/files.py", line 408, in __init__
+    swmr=swmr)
+  File "/usr/common/software/tensorflow/intel-tensorflow/2.2.0-py37/lib/python3.7/site-packages/h5py/_hl/files.py", line 173, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 88, in h5py.h5f.open
+OSError: Unable to open file (unable to lock file, errno = 524, error message = 'Unknown error 524')
+srun: error: nid00748: task 0: Exited with exit code 1
+srun: Terminating job step 32187753.0

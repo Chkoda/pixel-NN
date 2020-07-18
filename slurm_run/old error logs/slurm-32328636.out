@@ -1,0 +1,14 @@
+[2020-07-07 19:29:25,065 INFO] Loading data from /global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/training1.h5
+[2020-07-07 19:29:49,387 INFO] Building model from /global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/share/reference_number.py
+2020-07-07 19:29:52.421029: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2020-07-07 19:29:52.441966: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 2299860000 Hz
+2020-07-07 19:29:52.444786: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55555df23810 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-07-07 19:29:52.444827: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-07-07 19:29:52.444950: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+[2020-07-07 19:29:52,488 INFO] Fit with cpu count: 57
+[2020-07-07 19:29:52,488 INFO] Compiling model
+[2020-07-07 19:29:52,493 INFO] Fitting model
+slurmstepd: error: *** STEP 32328636.0 ON nid00785 CANCELLED AT 2020-07-07T19:30:42 DUE TO TIME LIMIT ***
+slurmstepd: error: *** JOB 32328636 ON nid00785 CANCELLED AT 2020-07-07T19:30:42 DUE TO TIME LIMIT ***
+srun: got SIGCONT
+srun: forcing job termination

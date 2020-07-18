@@ -1,1 +1,1 @@
-python scripts/run_training.py --input training1.h5 --model share/reference_number.py --name output/TrainedNN_7_6
+python /global/cfs/cdirs/atlas/achkodrov/pixel-NN/scripts/run_training.py --input /global/cfs/cdirs/atlas/achkodrov/data/train.h5 --model /global/cfs/cdirs/atlas/achkodrov/pixel-NN/share/reference_number.py --name /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6

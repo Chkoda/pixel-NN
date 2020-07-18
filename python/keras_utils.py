@@ -1,9 +1,13 @@
 import logging
 import warnings
 
-import tensorflow as tf
-import tensorflow.keras as keras
-import tensorflow.keras.backend as K
+#import tensorflow as tf
+#import tensorflow.keras as keras
+#import tensorflow.keras.backend as K
+
+import keras
+import keras.backend as K
+
 import numpy as np
 
 def load_model(path):
@@ -24,7 +28,7 @@ def simple_model(data_x,
                  learning_rate,
                  weight_decay,
                  momentum,
-                 #minibatch_size,
+                 minibatch_size,
                  loss_function):
 
     input_node = keras.layers.Input((data_x.shape[1],))
@@ -64,10 +68,12 @@ def simple_model(data_x,
     
 
     fit_args = {
+	'batch_size': minibatch_size,
         'epochs': 1000,
         'callbacks': [
             ThresholdEarlyStopping(verbose=1, min_epochs=50)
-        ]
+        ],
+	'validation_split': 0.1,
     }
 
     return model, compile_args, fit_args, None
@@ -76,7 +82,7 @@ def simple_model(data_x,
 def _sigmoid2(x):
     import sys
     MAXEXP = np.log(sys.float_info.max)
-    return tf.where(
+    return K.switch(
         K.greater_equal(-2*x, MAXEXP),
         0.0 * x,
         1.0 / (1.0 + K.exp(-2*x))
@@ -89,9 +95,7 @@ Sigmoid2 = keras.layers.Activation(_sigmoid2)
 
 def _config(layer, config):
     base_config = super(layer.__class__, layer).get_config()
-    conf_dict = dict(base_config.items()).copy()
-    conf_dict.update(dict(config.items()))
-    return conf_dict
+    return dict(base_config.items() + config.items())
 
 
 class OffsetAndScale(keras.layers.Layer):

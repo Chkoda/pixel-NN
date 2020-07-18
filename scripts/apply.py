@@ -2,10 +2,13 @@
 import argparse
 import logging
 import os
+os.environ['KERAS_BACKEND'] = 'theano'
 
-import tensorflow as tf
+#import tensorflow as tf
+#import tensorflow.keras as keras
 
-import tensorflow.keras as keras
+import keras
+
 import numpy as np
 import h5py as h5
 
@@ -14,7 +17,8 @@ sys.path.append('python')
 sys.path.append('scripts')
 
 import keras_utils, utils
-from run_training import _build_model
+from keras_utils import OffsetAndScale, _sigmoid2
+#from run_training import _build_model
 
 logging.basicConfig(
     level='INFO',
@@ -24,16 +28,28 @@ logging.basicConfig(
 
 def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
-    #model = keras.models.load_model(
-    #    model,
-    #    custom_objects={
-    #        'name': getattr(keras_utils, name) for name in dir(keras_utils)
-    #    }
-    #)
 
-    model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
-    model.compile(**compile_args)
-    model.load_weights(path)
+    '''
+    model = keras.models.load_model(
+        path,
+        custom_objects={
+            'OffsetAndScale': OffsetAndScale,
+            '_sigmoid2': _sigmoid2
+        }
+    )
+    '''
+    
+    model = keras.models.load_model(
+        path,
+        custom_objects={
+            name: getattr(keras_utils, name) for name in dir(keras_utils)
+        }
+    )
+    
+
+    #model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
+    #model.compile(**compile_args)
+    #model.load_weights(path)
 
     logging.info('Fetching input data for %s', nntype)
     #x_branches, _ = utils.get_branches(nntype)
@@ -69,7 +85,6 @@ def _get_args():
 def _main():
 
     args = _get_args()
-
 
     logging.info('Loading data from %s', args.input)
     with h5.File('data/total.h5', 'r') as data:
@@ -110,7 +125,7 @@ def _main():
 
     logging.info('Saving results to %s', outpath)
 
-    with h5.File(f'{outpath}/apply_outdata.h5', 'a') as hfile:
+    with h5.File('{}/apply_outdata.h5'.format(outpath), 'w') as hfile:
         for key in outdata.dtype.names:
             hfile.create_dataset(
                 key,

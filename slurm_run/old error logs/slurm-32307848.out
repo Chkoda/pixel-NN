@@ -1,0 +1,22 @@
+[2020-07-06 20:27:57,637 INFO] Loading data from /global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/training1.h5
+[2020-07-06 20:28:24,650 INFO] Building model from /global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/share/reference_number.py
+Traceback (most recent call last):
+  File "/global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/scripts/run_training.py", line 105, in <module>
+    _main()
+  File "/global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/scripts/run_training.py", line 72, in _main
+    model, compile_args, fit_args, params = _build_model(path, data_x, data_y)
+  File "/global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/scripts/run_training.py", line 35, in _build_model
+    defm = SourceFileLoader('model_def', path).load_module()
+  File "<frozen importlib._bootstrap_external>", line 407, in _check_name_wrapper
+  File "<frozen importlib._bootstrap_external>", line 907, in load_module
+  File "<frozen importlib._bootstrap_external>", line 732, in load_module
+  File "<frozen importlib._bootstrap>", line 265, in _load_module_shim
+  File "<frozen importlib._bootstrap>", line 696, in _load
+  File "<frozen importlib._bootstrap>", line 677, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/share/reference_number.py", line 4, in <module>
+    import keras_utils
+ModuleNotFoundError: No module named 'keras_utils'
+srun: error: nid00985: task 0: Exited with exit code 1
+srun: Terminating job step 32307848.0

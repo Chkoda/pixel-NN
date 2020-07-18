@@ -2,25 +2,30 @@
 """ run_training.py: driver script to train a neural network """
 
 import argparse
-from importlib.machinery import SourceFileLoader
 import logging
 import os
-
-os.environ['KERAS_BACKEND'] = 'tensorflow'
+os.environ['KERAS_BACKEND'] = 'theano'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-import tensorflow as tf
+
+
+#from importlib.machinery import SourceFileLoader
+#import tensorflow as tf
+#import tensorflow.keras as keras
+#from tensorflow.keras.callbacks import TensorBoard
+
+import imp
+import keras
 
 import h5py as h5
-import tensorflow.keras as keras
 import numpy as np
 import multiprocessing
 
-from tensorflow.keras.callbacks import TensorBoard
 keras.backend.set_floatx('float32')
 
 
 import datetime
 
+'''
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
   try:
@@ -32,6 +37,7 @@ if gpus:
   except RuntimeError as e:
     # Memory growth must be set before GPUs have been initialized
     print(e)
+'''
 
 def _find_py_file(path):
 
@@ -52,7 +58,8 @@ def _find_py_file(path):
 
 def _build_model(path, data_x, data_y):
     """ Load a model from a .py source """
-    defm = SourceFileLoader('model_def', path).load_module()
+    #defm = SourceFileLoader('model_def', path).load_module()
+    defm = imp.load_source('model_def', path)
     if 'build_model' not in dir(defm):
         raise RuntimeError("build_model() function not defined in '%s'" % path)
     buildf = defm.build_model
@@ -98,12 +105,12 @@ def _main():
             pfile.write(repr(params))
 
     log_dir = "logs\\fit\\" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "\\"
-    tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
+    #tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
 
     fit_args.setdefault('callbacks', [])
     
     fit_args['callbacks'] += [
-        tensorboard_callback,
+        #tensorboard_callback,
         keras.callbacks.TerminateOnNaN(),
         keras.callbacks.ModelCheckpoint(
             name + '.h5',
@@ -121,9 +128,10 @@ def _main():
     logging.info('Fitting model')
     fit_args['verbose'] = 2
 
-    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x, data_y)).batch(60)
-
-    history = model.fit(trainDataSet, **fit_args)
+    #trainDataSet = tf.data.Dataset.from_tensor_slices((data_x, data_y)).batch(60)
+    #history = model.fit(trainDataSet, **fit_args)
+    
+    history = model.fit(data_x, data_y, **fit_args)
 
     hpath = name + '.history.h5'
     logging.info('Writing fit history to %s', hpath)
