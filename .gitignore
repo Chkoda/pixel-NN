@@ -3,7 +3,7 @@
 
 /data
 \logs
-*.h5
+
 roc_vals.h5
 slurm_run/runtest.sh
 slurm_run/test.h5
@@ -12,3 +12,5 @@ slurm_run/test.txt
 output/roc_vals_1epoch.h5
 output/roc_vals_20epochs.h5
 output/NumberNetworkKFOLD.h5.bak
+output/apply_outdata.h5
+output/NumberNetworkKFOLD.h5

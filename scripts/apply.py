@@ -68,6 +68,7 @@ def _get_args():
     args.add_argument('--input', required=True)
     args.add_argument('--type', required=True, choices=['number', 'pos1', 'pos2', 'pos3'])
     args.add_argument('--output')
+    args.add_argument('--name', default='apply_outdata')
     args.add_argument('--ITk', action='store_true')
     args.add_argument('--pitchX', type=float, default=0.05)
     args.add_argument('--pitchY', type=float, default=None) # None == variable
@@ -125,7 +126,7 @@ def _main():
 
     logging.info('Saving results to %s', outpath)
 
-    with h5.File('{}/apply_outdata.h5'.format(outpath), 'w') as hfile:
+    with h5.File('{}/{}.h5'.format(outpath, args.name), 'w') as hfile:
         for key in outdata.dtype.names:
             hfile.create_dataset(
                 key,
