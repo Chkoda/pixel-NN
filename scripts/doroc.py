@@ -16,6 +16,30 @@ import tensorflow.keras as keras
 from sklearn.model_selection import KFold
 from sklearn.metrics import roc_curve, auc
 
+def doNumber(data_EC, data_Layer, data_number, data_true):
+
+    data = {}
+
+    outdata = np.zeros(
+        (data_number.shape[0],),
+        dtype=[
+            ('Output_number', np.dtype(('f4', 3))),
+            ('Output_number_true', 'i4')
+        ]
+    )
+
+    IBL = np.logical_and(data_Layer == 0, data_EC == 0)
+    Barrel = np.logical_and(data_Layer > 0, data_EC == 0)
+    Endcap = data_EC != 0
+
+    outdata['Output_number'] = data_number
+    outdata['Output_number_true'] = data_true
+
+    data['IBL'] = outdata[IBL]
+    data['Barrel'] = outdata[Barrel]
+    data['Endcap'] = outdata[Endcap]
+    return data
+
 def rocGraph(data, classes, name):
 
     fpr = [[0]*(10) for i in range(len(data))]
