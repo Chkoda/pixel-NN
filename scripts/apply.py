@@ -8,6 +8,7 @@ os.environ['KERAS_BACKEND'] = 'theano'
 #import tensorflow.keras as keras
 
 import keras
+import imp
 
 import numpy as np
 import h5py as h5
@@ -25,6 +26,14 @@ logging.basicConfig(
     format='[%(asctime)s %(levelname)s %(module)s.%(funcName)s] %(message)s'
 )
 
+def _build_model(path, data_x, data_y):
+    """ Load a model from a .py source """
+    #defm = SourceFileLoader('model_def', path).load_module()
+    defm = imp.load_source('model_def', path)
+    if 'build_model' not in dir(defm):
+        raise RuntimeError("build_model() function not defined in '%s'" % path)
+    buildf = defm.build_model
+    return buildf(data_x, data_y)
 
 def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
@@ -37,7 +46,7 @@ def _apply_model(path, nntype, data_x, data_y):
             '_sigmoid2': _sigmoid2
         }
     )
-    '''
+    
     
     model = keras.models.load_model(
         path,
@@ -45,11 +54,11 @@ def _apply_model(path, nntype, data_x, data_y):
             name: getattr(keras_utils, name) for name in dir(keras_utils)
         }
     )
-    
+    '''
 
-    #model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
-    #model.compile(**compile_args)
-    #model.load_weights(path)
+    model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
+    model.compile(**compile_args)
+    model.load_weights(path)
 
     logging.info('Fetching input data for %s', nntype)
     #x_branches, _ = utils.get_branches(nntype)
