@@ -124,7 +124,7 @@ def _main():
 
     args = _get_args()
 
-    with h5.File(f'output/{args.input}.h5', 'w') as data:
+    with h5.File(f'output/{args.input}.h5', 'r') as data:
         data_EC = data['NN_barrelEC'][()]
         data_Layer = data['NN_layer'][()]
         data_number = data['Output_number'][()]
