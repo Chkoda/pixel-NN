@@ -55,7 +55,7 @@ def simple_model(data_x,
 
     compile_args = {
         'optimizer': keras.optimizers.SGD(
-            lr=learning_rate,
+            learning_rate=learning_rate,
             momentum=momentum
         ),
         'loss': loss_function
@@ -77,14 +77,16 @@ def _sigmoid2(x):
     import sys
     MAXEXP = np.log(sys.float_info.max)
     return tf.where(
-        K.greater_equal(-2*x, MAXEXP),
-        0.0 * x,
-        1.0 / (1.0 + K.exp(-2*x))
+        tf.math.greater_equal(tf.math.abs(2*x), MAXEXP),
+        (tf.math.sign(x)+1.0)/2.0,
+        1.0 / (1.0 + tf.math.exp(-2*x))
     )
+    
 
 
-Sigmoid2 = keras.layers.Activation(_sigmoid2)
-#Sigmoid2 = keras.layers.Activation(keras.activations.sigmoid)
+
+#Sigmoid2 = keras.layers.Activation(_sigmoid2)
+Sigmoid2 = keras.layers.Activation(keras.activations.sigmoid)
 
 
 def _config(layer, config):

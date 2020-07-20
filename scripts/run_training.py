@@ -104,7 +104,7 @@ def _main():
     
     fit_args['callbacks'] += [
         tensorboard_callback,
-        keras.callbacks.TerminateOnNaN(),
+        #keras.callbacks.TerminateOnNaN(),
         keras.callbacks.ModelCheckpoint(
             name + '.h5',
             save_best_only=True,
@@ -119,9 +119,9 @@ def _main():
     model.compile(**compile_args)
 
     logging.info('Fitting model')
-    fit_args['verbose'] = 2
+    fit_args['verbose'] = 1
 
-    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x, data_y)).batch(60)
+    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x, data_y)).batch(1)
 
     history = model.fit(trainDataSet, **fit_args)
 
