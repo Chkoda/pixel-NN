@@ -94,6 +94,7 @@ def _get_args():
     args = argparse.ArgumentParser()
     args.add_argument('--input', required=True)
     args.add_argument('--name', default="")
+    return args.parse_args()
 
 def _main():
 
