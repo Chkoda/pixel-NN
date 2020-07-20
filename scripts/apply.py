@@ -46,7 +46,7 @@ def _apply_model(path, nntype, data_x, data_y):
             '_sigmoid2': _sigmoid2
         }
     )
-    
+    '''
     
     model = keras.models.load_model(
         path,
@@ -54,11 +54,10 @@ def _apply_model(path, nntype, data_x, data_y):
             name: getattr(keras_utils, name) for name in dir(keras_utils)
         }
     )
-    '''
 
-    model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
-    model.compile(**compile_args)
-    model.load_weights(path)
+    #model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
+    #model.compile(**compile_args)
+    #model.load_weights(path)
 
     logging.info('Fetching input data for %s', nntype)
     #x_branches, _ = utils.get_branches(nntype)
