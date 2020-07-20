@@ -15,7 +15,7 @@ import tensorflow.keras as keras
 from sklearn.model_selection import KFold
 from sklearn.metrics import roc_curve, auc
 
-def rocGraph(data, classes):
+def rocGraph(data, classes, name):
 
     fpr = [[0]*(10) for i in range(len(data))]
     tpr = [[0]*(10) for i in range(len(data))]
@@ -76,22 +76,23 @@ def rocGraph(data, classes):
     plt.legend(loc='upper left')
     plt.grid(True)
     plt.figtext(0.25, 0.90,f'{pos} vs {neg}',fontweight='bold', wrap=True, horizontalalignment='right', fontsize=10)
-    plt.savefig(f'output/{pos}{neg}_ROC.png')
+    plt.savefig(f'output/{name}{pos}{neg}_ROC.png')
     plt.close()
 
-def doRocs(data):
-    rocGraph(data, (3, 2))
-    rocGraph(data, (3, 1))
-    rocGraph(data, (2, 3))
-    rocGraph(data, (2, 1))
-    rocGraph(data, (1, 2))
-    rocGraph(data, (1, 3))
+def doRocs(data, name):
+    rocGraph(data, (3, 2), name)
+    rocGraph(data, (3, 1), name)
+    rocGraph(data, (2, 3), name)
+    rocGraph(data, (2, 1), name)
+    rocGraph(data, (1, 2), name)
+    rocGraph(data, (1, 3), name)
 
 
 
 def _get_args():
     args = argparse.ArgumentParser()
     args.add_argument('--input', required=True)
+    args.add_argument('--name', default="")
 
 def _main():
 
@@ -114,7 +115,7 @@ def _main():
     data = doNumber(data_EC, data_Layer, data_number, data_true)
     for i, layer in enumerate(data):
         data[layer] = np.array_split(data[layer], 10)
-    doRocs(data)
+    doRocs(data, args.name)
 
 if __name__ == '__main__':
     _main()
