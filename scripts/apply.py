@@ -24,13 +24,16 @@ logging.basicConfig(
 
 def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
-    #model = keras.models.load_model(
-    #    model,
-    #    custom_objects={
-    #        'name': getattr(keras_utils, name) for name in dir(keras_utils)
-    #    }
-    #)
+    
+    #LOADING 1
+    model = keras.models.load_model(
+        model,
+        custom_objects={
+            name: getattr(keras_utils, name) for name in dir(keras_utils)
+        }
+    )
 
+    #LOADING 2
     model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
     model.compile(**compile_args)
     model.load_weights(path)
