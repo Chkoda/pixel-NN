@@ -49,6 +49,7 @@ def _get_args():
     args.add_argument('--folds', default=10)
     args.add_argument('--batch_size', default=60)
     args.add_argument('--epochs', default=1000)
+    args.add_argument('--select_folds', nargs=2, default=-1)
     return args.parse_args()
 
 def _main():
@@ -59,8 +60,11 @@ def _main():
     logging.info('Loading data from {}'.format(args.input))
 
     with h5.File(args.input, 'r') as data:
-        data_x = data['input'][()]
-        data_y = data['target'][()]
+        #data_x = data['input'][()]
+        #data_y = data['target'][()]
+        data_x = data['input'][0:5000]
+        data_y = data['target'][0:5000]
+
 
     #DATA COMES PRESHUFFLED NOW
     #data = np.concatenate([data_x, data_y], axis=1)
@@ -71,7 +75,16 @@ def _main():
 
     kfold = KFold(n_splits=args.folds)
     splits = kfold.split(data_x,data_y)
+    fold_no = 0
 
+
+    if args.select_folds != -1:
+        logging.info('Custom kfold range')
+        sel_folds = [int(args.select_folds[0]), int(args.select_folds[1])]
+        fold_no = int(args.select_folds[0])
+        logging.info('From kfold {} to {}'.format(sel_folds[0], sel_folds[1]))
+        splits = [(train, test) for train, test in splits][sel_folds[0]:sel_folds[1]]
+    
     # Training and Validation
 
     _, compile_args, fit_args, _ = _build_model(path, data_x, data_y)
@@ -79,11 +92,10 @@ def _main():
     fit_args['batch_size']=args.batch_size
     fit_args['validation_split'] = 0.1
     fit_args['epochs'] = args.epochs
-    fit_args['callbacks'] = []
     
-    fold_no = 0
-    with h5.File('output/{}.h5'.format(args.name), 'w'):
-        logging.info('output/{}.h5 created/emptied'.format(args.name))
+    
+    with h5.File('output/{}.history.h5'.format(args.name), 'w'):
+        logging.info('output/{}.history.h5 created/emptied'.format(args.name))
 
     for train, test in splits:
         fold_no += 1
@@ -94,7 +106,7 @@ def _main():
         model.compile(**compile_args)
 
         logging.info('Training for fold {} ...'.format(fold_no))
-        fit_args['callbacks'] = [keras.callbacks.TerminateOnNaN(), 
+        fit_args['callbacks'] += [keras.callbacks.TerminateOnNaN(), 
                                 keras.callbacks.ModelCheckpoint(
                                     'output/' + args.name + str(fold_no) + '.h5', 
                                     save_best_only=True,
@@ -103,8 +115,8 @@ def _main():
                                 ]
         history = model.fit(data_x[train], data_y[train], **fit_args)
         
-        logging.info('Writing fit history to output/{}_history.h5'.format(args.name))
-        with h5.File('output/{}_history.h5'.format(args.name), 'a') as hfile:
+        logging.info('Writing fit history to output/{}.history.h5'.format(args.name))
+        with h5.File('output/{}.history.h5'.format(args.name), 'a') as hfile:
             for key, val in history.history.items():
                 hfile.create_dataset(key+'_'+str(fold_no), data=np.array(val))
 
