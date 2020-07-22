@@ -3,6 +3,7 @@
 
 /data
 \logs
+/output/theano_kfold/*.h5
 
 roc_vals.h5
 slurm_run/runtest.sh
