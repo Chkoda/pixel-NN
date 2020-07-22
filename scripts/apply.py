@@ -65,6 +65,7 @@ def _get_args():
     grp.add_argument('--model')
     grp.add_argument('--evaluated')
     grp.add_argument('--models', nargs=3)
+    grp.add_argument('--name')
 
     return args.parse_args()
 
@@ -75,7 +76,7 @@ def _main():
 
 
     logging.info('Loading data from %s', args.input)
-    with h5.File(f'data/{args.input}', 'r') as data:
+    with h5.File(args.input, 'r') as data:
         data_x = data['input'][()]
         data_y = data['target'][()]
     
@@ -113,7 +114,7 @@ def _main():
 
     logging.info('Saving results to %s', outpath)
 
-    with h5.File(f'{outpath}/apply_outdata.h5', 'a') as hfile:
+    with h5.File(f'{outpath}/{args.name}', 'w') as hfile:
         for key in outdata.dtype.names:
             hfile.create_dataset(
                 key,

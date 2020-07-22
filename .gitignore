@@ -3,6 +3,7 @@
 
 /data
 \logs
+/output/theano_kfold
 
 roc_vals.h5
 output/roc_vals_1epoch.h5

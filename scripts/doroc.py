@@ -87,7 +87,7 @@ def rocGraph(data, classes, name):
         rms_tpr = np.std(tpr_array, axis=0)
         plus_tpr = np.minimum(mean_tpr+rms_tpr, np.ones(npoints))
         minus_tpr = np.maximum(mean_tpr-rms_tpr,np.zeros(npoints))
-        plt.plot(base_fpr, mean_tpr, linetypes[i], label=f'{layer} (AUC = {np.mean(auc1[i][j][()]):.2f} (+- {np.std(auc1[i][j][()]):.4f}))')
+        plt.plot(base_fpr, mean_tpr, linetypes[i], label=f'{layer} (AUC = {np.mean(auc1[i]):.2f} (+- {np.std(auc1[i]):.4f}))')
         plt.fill_between(base_fpr, minus_tpr, plus_tpr, alpha=0.3)
         
         
