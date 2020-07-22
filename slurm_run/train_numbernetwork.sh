@@ -1,2 +1,0 @@
-cd ..
-python /global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/scripts/run_training.py --input /global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/training1.h5 --model /global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/share/reference_number.py --name output/trained_NumberNetwork

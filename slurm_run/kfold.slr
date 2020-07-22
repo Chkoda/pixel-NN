@@ -1,0 +1,21 @@
+#!/bin/bash
+#SBATCH -C gpu
+#SBATCH -N 1
+#SBATCH -G 1
+#SBATCH -t 01:45:00
+#SBATCH -q regular
+#SBATCH -J runtest
+#SBATCH -A m1759
+#SBATCH --mail-user=chkoda@uw.edu
+#SBATCH --mail-type=ALL
+
+
+#set up environment
+module load gcc
+module load cmake
+source activate py2theano
+
+
+#run the application:
+cd /global/cfs/cdirs/atlas/achkodrov/pixel-NN/
+srun python scripts/run_training.py --input ../data/train.h5 --model share/reference_number.py --name output/TrainedNN_7_6
