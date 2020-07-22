@@ -75,7 +75,7 @@ def _main():
 
 
     logging.info('Loading data from %s', args.input)
-    with h5.File('data/total.h5', 'r') as data:
+    with h5.File(f'data/{args.input}', 'r') as data:
         data_x = data['input'][()]
         data_y = data['target'][()]
     
