@@ -44,10 +44,10 @@ def _apply_model(path, nntype, data_x, data_y):
         }
     )
 
-    model_json = model.to_json()
-    with open("modelWeights/LGconfig.json", "w") as json_file:
-        json_file.write(model_json)
-    model.save_weights('modelWeights/LGmodelweights.h5')
+    #model_json = model.to_json()
+    #with open("modelWeights/LGconfig.json", "w") as json_file:
+    #    json_file.write(model_json)
+    #model.save_weights('modelWeights/LGmodelweights.h5')
 
     #model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
     #model.compile(**compile_args)
@@ -90,9 +90,9 @@ def _main():
     args = _get_args()
 
     logging.info('Loading data from %s', args.input)
-    with h5.File('data/total.h5', 'r') as data:
-        data_x = data['input'][0:100]
-        data_y = data['target'][0:100]
+    with h5.File(args.input, 'r') as data:
+        data_x = data['input'][()]
+        data_y = data['target'][()]
     
     #data = root_numpy.root2array(args.input, stop=args.max_clusters)
 
