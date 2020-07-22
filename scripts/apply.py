@@ -15,9 +15,8 @@ import h5py as h5
 
 import sys
 sys.path.append('python')
-sys.path.append('scripts')
 
-import keras_utils, utils
+import keras_utils
 from keras_utils import OffsetAndScale, _sigmoid2
 #from run_training import _build_model
 
@@ -38,22 +37,17 @@ def _build_model(path, data_x, data_y):
 def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
 
-    '''
-    model = keras.models.load_model(
-        path,
-        custom_objects={
-            'OffsetAndScale': OffsetAndScale,
-            '_sigmoid2': _sigmoid2
-        }
-    )
-    '''
-    
     model = keras.models.load_model(
         path,
         custom_objects={
             name: getattr(keras_utils, name) for name in dir(keras_utils)
         }
     )
+
+    model_json = model.to_json()
+    with open("modelWeights/LGconfig.json", "w") as json_file:
+        json_file.write(model_json)
+    model.save_weights('modelWeights/LGmodelweights.h5')
 
     #model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
     #model.compile(**compile_args)
@@ -97,8 +91,8 @@ def _main():
 
     logging.info('Loading data from %s', args.input)
     with h5.File('data/total.h5', 'r') as data:
-        data_x = data['input'][()]
-        data_y = data['target'][()]
+        data_x = data['input'][0:100]
+        data_y = data['target'][0:100]
     
     #data = root_numpy.root2array(args.input, stop=args.max_clusters)
 

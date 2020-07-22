@@ -104,7 +104,7 @@ def _main():
         with open(ppath, 'w') as pfile:
             pfile.write(repr(params))
 
-    log_dir = "logs\\fit\\" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "\\"
+    #log_dir = "logs\\fit\\" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "\\"
     #tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
 
     fit_args.setdefault('callbacks', [])
@@ -115,7 +115,7 @@ def _main():
         keras.callbacks.ModelCheckpoint(
             name + '.h5',
             save_best_only=True,
-            verbose=2
+            verbose=1
         )
     ]
     #fit_args['use_multiprocessing'] = True
@@ -126,7 +126,7 @@ def _main():
     model.compile(**compile_args)
 
     logging.info('Fitting model')
-    fit_args['verbose'] = 2
+    fit_args['verbose'] = 1
 
     #trainDataSet = tf.data.Dataset.from_tensor_slices((data_x, data_y)).batch(60)
     #history = model.fit(trainDataSet, **fit_args)
