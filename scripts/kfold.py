@@ -60,10 +60,10 @@ def _main():
     logging.info('Loading data from {}'.format(args.input))
 
     with h5.File(args.input, 'r') as data:
-        #data_x = data['input'][()]
-        #data_y = data['target'][()]
-        data_x = data['input'][0:5000]
-        data_y = data['target'][0:5000]
+        data_x = data['input'][()]
+        data_y = data['target'][()]
+        #data_x = data['input'][0:5000]
+        #data_y = data['target'][0:5000]
 
 
     #DATA COMES PRESHUFFLED NOW
