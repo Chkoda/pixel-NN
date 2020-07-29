@@ -17,3 +17,8 @@ output/LG_theano_test.h5
 output/Trained_theano_test.h5
 output/Trained_theano_total.h5
 output/LG_test.h5
+*.h5
+*.h5
+output/LGtf.h5
+output/appy_LGtf.h5
+output/appy_LG.h5

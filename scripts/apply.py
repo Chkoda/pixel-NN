@@ -26,12 +26,12 @@ def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
     
     #LOADING 1
-    model = keras.models.load_model(
-        model,
-        custom_objects={
-            name: getattr(keras_utils, name) for name in dir(keras_utils)
-        }
-    )
+    #model = keras.models.load_model(
+    #   model,
+    #    custom_objects={
+    #        name: getattr(keras_utils, name) for name in dir(keras_utils)
+    #    }
+    #)
 
     #LOADING 2
     model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
@@ -60,12 +60,12 @@ def _get_args():
     args.add_argument('--pitchY', type=float, default=None) # None == variable
     args.add_argument('--number-thresholds', type=float, nargs=2, default=[0.6, 0.2])
     args.add_argument('--max-clusters', type=int, default=None)
+    args.add_argument('--name')
 
     grp = args.add_mutually_exclusive_group(required=True)
     grp.add_argument('--model')
     grp.add_argument('--evaluated')
     grp.add_argument('--models', nargs=3)
-    grp.add_argument('--name')
 
     return args.parse_args()
 
