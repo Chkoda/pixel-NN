@@ -40,7 +40,36 @@ def doNumber(data_EC, data_Layer, data_number, data_true):
     data['Endcap'] = outdata[Endcap]
     return data
 
-def rocGraph(data, classes, name, folds):
+def evaluate(data, classes):
+
+    fpr = [[0] for i in range(len(data))]
+    tpr = [[0] for i in range(len(data))]
+    auc1 = [[0] for i in range(len(data))]
+    
+    pos, neg = classes
+
+    for i, layer in enumerate(data):
+
+        pos_sel = data[layer]['Output_number_true'] == pos
+        neg_sel = data[layer]['Output_number_true'] == neg
+
+        isel = np.where(
+            np.logical_or(
+                pos_sel,
+                neg_sel,
+            )
+        )[0]
+
+        fpr[i], tpr[i], _ = roc_curve(
+            data[layer]['Output_number_true'][isel],
+            data[layer]['Output_number'][isel][:, pos - 1],
+            pos_label=pos
+        )
+        auc1[i] = auc(fpr[i], tpr[i])
+
+    return fpr, tpr, auc1
+
+def rocGraph(data, classes, name, folds, dataLG):
 
     fpr = [[0]*(folds) for i in range(len(data))]
     tpr = [[0]*(folds) for i in range(len(data))]
@@ -52,6 +81,9 @@ def rocGraph(data, classes, name, folds):
 
     pos, neg = classes
     linetypes = ['-', '--', ':']
+
+    if dataLG is not None:
+        LG_fpr, LG_tpr, LG_auc = evaluate(dataLG, classes)
 
     for j, layer in enumerate(data):
 
@@ -87,8 +119,10 @@ def rocGraph(data, classes, name, folds):
         rms_tpr = np.std(tpr_array, axis=0)
         plus_tpr = np.minimum(mean_tpr+rms_tpr, np.ones(npoints))
         minus_tpr = np.maximum(mean_tpr-rms_tpr,np.zeros(npoints))
-        plt.plot(base_fpr, mean_tpr, linetypes[i], label=f'{layer} (AUC = {np.mean(auc1[i]):.2f} (+- {np.std(auc1[i]):.4f}))')
-        plt.fill_between(base_fpr, minus_tpr, plus_tpr, alpha=0.3)
+        plt.plot(base_fpr, mean_tpr, linetypes[2], color=colors[i], label=f'{layer} (AUC = {np.mean(auc1[i]):.2f} (+- {np.std(auc1[i]):.4f}))')
+        plt.fill_between(base_fpr, minus_tpr, plus_tpr, color=colors[i], alpha=0.3)
+        if dataLG is not None:
+            plt.plot(LG_fpr[i], LG_tpr[i], linetypes[0], color=colors[i], label=f'{layer} LG (AUC = {LG_auc[i]:.2f}')
         
         
     rand_chance = np.linspace(0, 1, 100)
@@ -97,20 +131,20 @@ def rocGraph(data, classes, name, folds):
     plt.ylabel(f"Pr(Estimated: {pos}-particle | True: {pos}-particle)")
     plt.xlabel(f"Pr(Estimated: {pos}-particle | True: {neg}-particle)")
     plt.xlim([0.001, 1.05])
-    plt.ylim(0,1.05)
+    plt.ylim(0,1.5)
     plt.legend(loc='upper left')
     plt.grid(True)
     plt.figtext(0.25, 0.90,f'{pos} vs {neg}',fontweight='bold', wrap=True, horizontalalignment='right', fontsize=10)
     plt.savefig(f'output/{name}{pos}{neg}_ROC.png')
     plt.close()
 
-def doRocs(data, name, folds):
-    rocGraph(data, (3, 2), name, folds)
-    rocGraph(data, (3, 1), name, folds)
-    rocGraph(data, (2, 3), name, folds)
-    rocGraph(data, (2, 1), name, folds)
-    rocGraph(data, (1, 2), name, folds)
-    rocGraph(data, (1, 3), name, folds)
+def doRocs(data, name, folds, dataLG = None):
+    rocGraph(data, (3, 2), name, folds, dataLG)
+    rocGraph(data, (3, 1), name, folds, dataLG)
+    rocGraph(data, (2, 3), name, folds, dataLG)
+    rocGraph(data, (2, 1), name, folds, dataLG)
+    rocGraph(data, (1, 2), name, folds, dataLG)
+    rocGraph(data, (1, 3), name, folds, dataLG)
 
 
 
@@ -119,6 +153,7 @@ def _get_args():
     args.add_argument('--input', required=True)
     args.add_argument('--name', default="")
     args.add_argument('--folds', default=10)
+    args.add_argument('--overlay', default=None)
     return args.parse_args()
 
 def _main():
@@ -137,7 +172,20 @@ def _main():
         data = doNumber(data_EC, data_Layer, data_number, data_true)
         for j, layer in enumerate(data):
             splitdata[layer].append(data[layer])
-    doRocs(splitdata, args.name, args.folds)
+
+    if args.overlay is not None:
+
+        with h5.File(f'output/{args.overlay}.h5', 'r') as data:
+            data_EC = data['NN_barrelEC'][()]
+            data_Layer = data['NN_layer'][()]
+            data_number = data['Output_number'][()]
+            data_true = data['Output_number_true'][()]
+
+        data = doNumber(data_EC, data_Layer, data_number, data_true)        
+        doRocs(splitdata, args.name, args.folds, data)
+
+    else:
+        doRocs(splitdata, args.name, args.folds)
 
 if __name__ == '__main__':
     _main()
