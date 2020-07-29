@@ -6,10 +6,6 @@
 /output/theano_kfold/*.h5
 
 roc_vals.h5
-slurm_run/runtest.sh
-slurm_run/test.h5
-slurm_run/test.py
-slurm_run/test.txt
 output/roc_vals_1epoch.h5
 output/roc_vals_20epochs.h5
 output/NumberNetworkKFOLD.h5.bak
@@ -22,3 +18,8 @@ output/LG_theano_test.h5
 output/Boping_theano_test.h5
 output/Boping_theano_test.h5
 output/Boping_theano_test.h5
+output/barrel_trained_apply.h5
+output/endcap_flip_trained_apply.h5
+output/endcap_noflip_trained_apply.h5
+output/ibl_trained_apply.h5
+output/trained_apply.h5

@@ -1,4 +1,5 @@
-cd C:\Users\alexc\OneDrive\Projects\pixel-NN-master
+#cd C:\Users\alexc\OneDrive\Projects\pixel-NN-master
+cd C:\Users\alexc\Desktop\Projects\pixel-NN-master
 
 python scripts/run_training.py --input data/train.h5 --model share/reference_number.py --name theano090
 
