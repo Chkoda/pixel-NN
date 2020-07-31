@@ -19,9 +19,8 @@ source activate py2theano
 #run the application:
 cd /global/cfs/cdirs/atlas/achkodrov/pixel-NN/
 
-srun --hint=nomultithread -N 1 -G 1 python scripts/kfold.py --input ../data/training.h5 --model share/reference_number.py --name kfold/theano104_kfold --select_folds 0 2 &
-srun --hint=nomultithread -N 1 -G 1 python scripts/kfold.py --input ../data/training.h5 --model share/reference_number.py --name kfold/theano104_kfold --select_folds 2 4 &
-srun --hint=nomultithread -N 1 -G 1 python scripts/kfold.py --input ../data/training.h5 --model share/reference_number.py --name kfold/theano104_kfold --select_folds 4 6 &
-srun --hint=nomultithread -N 1 -G 1 python scripts/kfold.py --input ../data/training.h5 --model share/reference_number.py --name kfold/theano104_kfold --select_folds 6 8 &
-srun --hint=nomultithread -N 1 -G 1 python scripts/kfold.py --input ../data/training.h5 --model share/reference_number.py --name kfold/theano104_kfold --select_folds 8 10 &
+for i in {1..10}
+do
+	srun --hint=nomultithread -N 1 -G 1 python scripts/kfold.py --input ../data/even_split_shuffled.h5 --model share/reference_number.py --name kfold/theano104_evensplit_kfold --select_folds $i &
+done
 wait
