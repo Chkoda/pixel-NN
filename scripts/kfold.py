@@ -49,7 +49,7 @@ def _get_args():
     args.add_argument('--folds', default=10)
     args.add_argument('--batch_size', default=60)
     args.add_argument('--epochs', default=1000)
-    args.add_argument('--select_folds', nargs=2, default=-1)
+    args.add_argument('--select_folds', nargs='*', default=-1)
     return args.parse_args()
 
 def _main():
@@ -78,12 +78,20 @@ def _main():
     fold_no = 0
 
 
-    if args.select_folds != -1:
+    if type(args.select_folds) == list: # != -1:
         logging.info('Custom kfold range')
-        sel_folds = [int(args.select_folds[0]), int(args.select_folds[1])]
-        fold_no = int(args.select_folds[0])
-        logging.info('From kfold {} to {}'.format(sel_folds[0], sel_folds[1]))
-        splits = [(train, test) for train, test in splits][sel_folds[0]:sel_folds[1]]
+        if len(args.select_folds) == 2:
+            sel_folds = [int(args.select_folds[0]), int(args.select_folds[1])]
+            fold_no = int(args.select_folds[0])
+            logging.info('From kfold {} to {}'.format(sel_folds[0], sel_folds[1]))
+            splits = [(train, test) for train, test in splits][sel_folds[0]:sel_folds[1]]
+        elif len(args.select_folds) == 1:
+            sel_fold = int(args.select_folds[0]) - 1
+            fold_no = sel_fold
+            logging.info('kfold {}'.format(sel_fold))
+            splits = [[(train, test) for train, test in splits][sel_fold]]
+        else:
+            raise Exception('Too many command line arguments for select folds!')
     
     # Training and Validation
 
