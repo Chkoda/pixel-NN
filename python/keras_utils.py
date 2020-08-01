@@ -74,18 +74,11 @@ def simple_model(data_x,
 
 
 def _sigmoid2(x):
-    import sys
-    MAXEXP = np.log(sys.float_info.max)
-    return tf.where(
-        tf.math.greater_equal(tf.math.abs(2*x), MAXEXP),
-        (tf.math.sign(x)+1.0)/2.0,
-        1.0 / (1.0 + tf.math.exp(-2*x))
-    )
+    return tf.math.sigmoid(2*x)
 
 
 
 Sigmoid2 = keras.layers.Activation(_sigmoid2)
-#Sigmoid2 = keras.layers.Activation(keras.activations.sigmoid)
 
 
 def _config(layer, config):
