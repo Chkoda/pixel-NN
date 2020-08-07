@@ -8,6 +8,7 @@ os.environ['KERAS_BACKEND'] = 'theano'
 #import tensorflow.keras as keras
 
 import keras
+from keras.utils import plot_model
 import imp
 
 import numpy as np
@@ -18,6 +19,7 @@ sys.path.append('python')
 
 import keras_utils
 from keras_utils import OffsetAndScale, _sigmoid2
+
 #from run_training import _build_model
 
 logging.basicConfig(
@@ -37,21 +39,38 @@ def _build_model(path, data_x, data_y):
 def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
 
+    '''
     model = keras.models.load_model(
         path,
         custom_objects={
             name: getattr(keras_utils, name) for name in dir(keras_utils)
         }
     )
+    '''
 
-    #model_json = model.to_json()
-    #with open("modelWeights/LGconfig.json", "w") as json_file:
-    #    json_file.write(model_json)
-    #model.save_weights('modelWeights/LGmodelweights.h5')
-
-    #model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
-    #model.compile(**compile_args)
+    
+    '''
+    model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
+    model.compile(**compile_args)
     #model.load_weights(path)
+    print(model.summary())
+    '''
+    '''
+    model_json = model.to_json()
+    with open("modelWeights/noOffsetScaleconfig.json", "w") as json_file:
+        json_file.write(model_json)
+    #model.save_weights('modelWeights/LGmodelweights.h5')
+    '''
+
+    # load json and create model
+    json_file = open('modelWeights/noOffsetScaleconfig.json', 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+    model = keras.models.model_from_json(loaded_model_json)
+    # load weights into new model
+    model.load_weights("modelWeights/LGmodelweights.h5")
+    print("Loaded model from disk")
+    
 
     logging.info('Fetching input data for %s', nntype)
     #x_branches, _ = utils.get_branches(nntype)
@@ -93,6 +112,8 @@ def _main():
     with h5.File(args.input, 'r') as data:
         data_x = data['input'][()]
         data_y = data['target'][()]
+        #data_x = data['input'][:100]
+        #data_y = data['target'][:100]
     
     #data = root_numpy.root2array(args.input, stop=args.max_clusters)
 
