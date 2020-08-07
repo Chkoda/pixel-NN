@@ -24,3 +24,7 @@ output/endcap_noflip_trained_apply.h5
 output/ibl_trained_apply.h5
 output/trained_apply.h5
 output/LG_apply.h5
+output/theano104_jz7w_applyjz4w.h5
+output/theano104_jz7w_applyjz7w.h5
+output/theano104_jz7wevensplit_applyjz4w.h5
+output/theano104_jz7wevensplit_applyjz7w.h5

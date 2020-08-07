@@ -39,15 +39,12 @@ def _build_model(path, data_x, data_y):
 def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
 
-    '''
     model = keras.models.load_model(
         path,
         custom_objects={
             name: getattr(keras_utils, name) for name in dir(keras_utils)
         }
     )
-    '''
-
     
     '''
     model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
@@ -61,7 +58,7 @@ def _apply_model(path, nntype, data_x, data_y):
         json_file.write(model_json)
     #model.save_weights('modelWeights/LGmodelweights.h5')
     '''
-
+    '''
     # load json and create model
     json_file = open('modelWeights/noOffsetScaleconfig.json', 'r')
     loaded_model_json = json_file.read()
@@ -70,7 +67,7 @@ def _apply_model(path, nntype, data_x, data_y):
     # load weights into new model
     model.load_weights("modelWeights/LGmodelweights.h5")
     print("Loaded model from disk")
-    
+    '''
 
     logging.info('Fetching input data for %s', nntype)
     #x_branches, _ = utils.get_branches(nntype)
