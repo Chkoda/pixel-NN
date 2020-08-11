@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -C gpu
-#SBATCH -N 2
-#SBATCH -G 2
+#SBATCH -N 1
+#SBATCH -G 1
 #SBATCH -t 01:30:00
 #SBATCH -q regular
 #SBATCH -J runtest
@@ -18,6 +18,4 @@ source activate py2theano
 
 #run the application:
 cd /global/cfs/cdirs/atlas/achkodrov/pixel-NN/
-srun --hint=nomultithread -N 1 -G 1 python scripts/run_training.py --input ../data/jz7w_evensplit_train.h5 --model share/reference_number.py --name output/theano104_jz7wevensplit &
-srun --hint=nomultithread -N 1 -G 1 python scripts/run_training.py --input ../data/jz7w_train.h5 --model share/reference_number.py --name output/theano104_jz7w &
-wait
+srun --hint=nomultithread -N 1 -G 1 python scripts/run_training.py --input ../data/jz7w_evensplitlayers_equalfrac_train.h5 --model share/reference_number.py --name modelWeights/jz7w_evensplitlayers_equalfrac
