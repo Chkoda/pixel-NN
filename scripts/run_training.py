@@ -97,13 +97,13 @@ def _main():
         with open(ppath, 'w') as pfile:
             pfile.write(repr(params))
 
-    log_dir = "logs\\fit\\" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "\\"
-    tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
+    #log_dir = "logs\\fit\\" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "\\"
+    #tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
 
     fit_args.setdefault('callbacks', [])
     
     fit_args['callbacks'] += [
-        tensorboard_callback,
+        #tensorboard_callback,
         keras.callbacks.TerminateOnNaN(),
         keras.callbacks.ModelCheckpoint(
             name + '.h5',
