@@ -36,3 +36,11 @@ output/evensplit_equalfrac_jz4wapply.h5
 output/evensplit_equalfrac_jz7wapply.h5
 .vscode/settings.json
 output/evensplit_equalfrac_smallsample.h5
+output/evensplit_equalfrac_smallsample_applyjz7w.h5
+output/jz7wevensplit_equalfrac_applysmallsample.h5
+modelWeights/812_evensplitlayers_equalfrac.h5
+modelWeights/813_evensplit_equalfrac_smallsample.h5
+output/812_evensplit_equalfrac_applysmallsample.h5
+output/812_evensplit_equalfrac_jz7wapply.h5
+output/813_evensplit_equalfrac_smallsample_applyjz7w.h5
+output/814_evensplit_equalfrac_applyjz7w.h5
