@@ -125,7 +125,7 @@ def _main():
     validationDataSet = tf.data.Dataset.from_tensor_slices((data_x[:validation_index], data_y[:validation_index])).batch(60)
     trainDataSet = tf.data.Dataset.from_tensor_slices((data_x[validation_index:], data_y[validation_index:])).batch(60)
 
-    history = model.fit(trainDataSet, **fit_args, validation_data=validationDataSet)
+    history = model.fit(x=trainDataSet, **fit_args, validation_data=validationDataSet)
 
     hpath = name + '.history.h5'
     logging.info('Writing fit history to %s', hpath)
