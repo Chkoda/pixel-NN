@@ -1,0 +1,19 @@
+#!/bin/bash
+#SBATCH -C gpu
+#SBATCH -N 1
+#SBATCH -G 1
+#SBATCH -t 02:00:00
+#SBATCH -q regular
+#SBATCH -J runtest
+#SBATCH -A m1759
+
+
+#set up environment
+module load gcc
+module load cmake
+source activate pixelTF
+
+
+#run the application:
+cd /global/cfs/cdirs/atlas/skach/pixel-NN/
+srun --hint=nomultithread -N 1 -G 1 python scripts/run_training.py --input data/train.h5 --model share/reference_number.py --name output/817tf
