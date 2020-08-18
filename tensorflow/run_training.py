@@ -120,7 +120,7 @@ def _main():
             ModelCheckpoint(args.outputModel+'.h5', save_best_only=True, verbose=2),
             #TensorBoard(log_dir=log_dir, histogram_freq=1)
         ],
-        'verbose': 1,
+        'verbose': 0,
         #'validation_split': 0.1 #not compatible with fit_args when using tensordata
     }
 
