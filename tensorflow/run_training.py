@@ -27,9 +27,9 @@ def _get_args():
     args.add_argument('--learning_rate', default=0.08)
     args.add_argument('--regularizer', default=1e-7)
     args.add_argument('--batch_size', default=60)
-    args.add_argument('--epochs', default=20)
+    args.add_argument('--epochs', default=50)
     args.add_argument('--momentum', default=0.4)
-    args.add_argument('--patience', default=50)
+    args.add_argument('--patience', default=10)
     args.add_argument('--hidden_activation', default=_sigmoid2) #tf.keras.activations.sigmoid,
     args.add_argument('--output_activation', default=_sigmoid2) #tf.keras.activations.sigmoid,
     return args.parse_args()
