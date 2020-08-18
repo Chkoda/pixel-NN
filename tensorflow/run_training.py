@@ -3,12 +3,14 @@ import h5py as h5
 import logging
 import datetime
 from collections import namedtuple
-import matplotlib.pyplot as plt
-from sklearn.model_selection import KFold
-from sklearn.metrics import roc_curve, auc
+import argparse
+#import matplotlib.pyplot as plt
+#from sklearn.model_selection import KFold
+#from sklearn.metrics import roc_curve, auc
 
 import tensorflow as tf
 from tensorflow import keras
+from tensorflow.keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoint
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.models import Model
@@ -17,24 +19,47 @@ from tensorflow.keras.initializers import GlorotNormal
 from tensorflow import random_normal_initializer
 
 
-
+def _get_args():
+    args = argparse.ArgumentParser()
+    args.add_argument('--inputData', required=True)
+    args.add_argument('--outputModel', required=True)
+    args.add_argument('--structure', default=[25, 20])
+    args.add_argument('--learning_rate', default=0.08)
+    args.add_argument('--regularizer', default=1e-7)
+    args.add_argument('--batch_size', default=60)
+    args.add_argument('--epochs', default=20)
+    args.add_argument('--momentum', default=0.4)
+    args.add_argument('--patience', default=50)
+    args.add_argument('--hidden_activation', default=_sigmoid2) #tf.keras.activations.sigmoid,
+    args.add_argument('--output_activation', default=_sigmoid2) #tf.keras.activations.sigmoid,
+    return args.parse_args()
 
 def _main():
+    args = _get_args()
+
+    '''
     Option = namedtuple("MyStruct", "data_input model_output structure learning_rate regularizer batch_size epochs \
-                    momentum patience")
+                    momentum patience hidden_activation output_activation")
                     # folds batch_size epochs")
                     #structure learning_rate regularizer epochs")
     args = Option(
-        data_input='data/training.h5',
+        data_input='C:/Users/alexc/Desktop/Projects/pixel-NN-master/data/814_evensplit_equalfrac_train.h5',
         model_output='output/tf_model',
-        structure=[25, 25, 25, 25],
-        learning_rate=0.004,
-        regularizer=1e-6,
+        structure=[25, 20],
+        learning_rate=0.08,
+        regularizer=1e-7,
         batch_size=60,
         epochs=20,
-        #folds=10,
-        momentum=0.2,
-        patience=5,
+        momentum=0.4,
+        patience=50,
+        hidden_activation=_sigmoid2, #tf.keras.activations.sigmoid,
+        output_activation=_sigmoid2 #tf.keras.activations.sigmoid,
+    )
+    '''
+
+    logging.basicConfig(
+        level='INFO',
+        format='[%(asctime)s %(levelname)s] %(message)s'
     )
 
     gpus = tf.config.experimental.list_physical_devices('GPU')
@@ -50,13 +75,13 @@ def _main():
             # Memory growth must be set before GPUs have been initialized
             print(e)
 
-    logging.info(f'Loading data from {args.data_input}')
+    logging.info(f'Loading data from {args.inputData}')
 
-    with h5.File(args.data_input, 'r') as data:
-        data_x = data['input'][()]
-        data_y = data['target'][()]
-        #data_x = data['input'][:5000]
-        #data_y = data['target'][:5000]
+    with h5.File(args.inputData, 'r') as data:
+        #data_x = data['input'][()]
+        #data_y = data['target'][()]
+        data_x = data['input'][:5000]
+        data_y = data['target'][:5000]
 
     std = np.std(data_x, axis=0, ddof=1)
     std[np.where(std == 0)] = 1
@@ -68,18 +93,18 @@ def _main():
 
     for l in range(0, len(args.structure)):
         h = Dense(args.structure[l], kernel_regularizer=l2(args.regularizer), kernel_initializer=init)(h)
-        h = tf.keras.activations.relu(h, alpha=0.1)
+        h = args.hidden_activation(h) #, alpha=0.1) #for leaky relu
         
     output_layer = Dense(data_y.shape[1], kernel_regularizer=l2(args.regularizer), kernel_initializer=init)(h)
-    output_layer = tf.keras.activations.softmax(output_layer)
+    output_layer = args.output_activation(output_layer)
 
     model = tf.keras.models.Model(inputs=inputs, outputs=output_layer)
 
     print(model.summary())
-    keras.utils.plot_model(model)
+    #keras.utils.plot_model(model)
 
     compile_args = {
-        'optimizer': Adam(learning_rate=args.learning_rate, amsgrad=True),
+        'optimizer': SGD(learning_rate=args.learning_rate, momentum=args.momentum),
         'loss': 'categorical_crossentropy'
     }
 
@@ -91,29 +116,30 @@ def _main():
         #'batch_size': args.batch_size,
         'epochs': args.epochs,
         'callbacks': [
-            tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=args.patience, verbose=1, mode='auto'),
-            tf.keras.callbacks.ModelCheckpoint(args.model_output+'.h5', save_best_only=True, verbose=2),
-            tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+            EarlyStopping(monitor='val_loss', patience=args.patience, verbose=1, mode='auto'),
+            ModelCheckpoint(args.outputModel+'.h5', save_best_only=True, verbose=2),
+            #TensorBoard(log_dir=log_dir, histogram_freq=1)
         ],
         'verbose': 1,
-        #'validation_split': 0.1
+        #'validation_split': 0.1 #not compatible with fit_args when using tensordata
     }
 
     validation_index = int(data_x.shape[0]*0.1)
-    validationDataSet = tf.data.Dataset.from_tensor_slices((data_x[-validation_index:],data_y[-validation_index:])).batch(args.batch_size)
-    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x[:-validation_index], data_y[:-validation_index])).batch(args.batch_size)
+    validationDataSet = tf.data.Dataset.from_tensor_slices((data_x[:validation_index], data_y[:validation_index])).batch(args.batch_size)
+    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x[validation_index:], data_y[validation_index:])).batch(args.batch_size)
+
     history = model.fit(x=trainDataSet, validation_data=validationDataSet, **fit_args)
-    
-    
     #history = model.fit(data_x, data_y, **fit_args)
     
-    hpath = args.model_output + '.history.h5'
+    hpath = args.outputModel + '.history.h5'
     logging.info('Writing fit history to %s', hpath)
     with h5.File(hpath, 'w') as hfile:
         for key, val in history.history.items():
             hfile.create_dataset(key, data=np.array(val))
 
 
+def _sigmoid2(x):
+    return tf.math.sigmoid(2*x)
 
 def _config(layer, config):
     base_config = super(layer.__class__, layer).get_config()
@@ -144,6 +170,9 @@ class OffsetAndScale(keras.layers.Layer):
             'offset': self.offset,
             'scale': self.scale
         })
+
+'''
+#FOR APPLYING MDOEL AND PLOTTING ROCS
 
 def _do_number(data_x, data_y, pred, thrs):
 
@@ -290,6 +319,8 @@ def doRocs(data, name):
     rocGraph(data, (2, 1), name)
     rocGraph(data, (1, 2), name)
     rocGraph(data, (1, 3), name)
+
+'''
 
 if __name__ == "__main__":
     _main()
