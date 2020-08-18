@@ -1,7 +1,10 @@
-cd C:\Users\alexc\OneDrive\Projects\pixel-NN-master
+salloc -C gpu -N 1 -c 1 -G 1 -t 10 -A m1759
 
+cd C:\Users\alexc\Desktop\Projects\pixel-NN-master
+
+python tensorflow/run_training.py --inputData ../data/814_evensplit_equalfrac_train.h5 --outputModel modelWeights/tf_814
 python scripts/run_training.py --input data/train.h5 --model share/reference_number.py --name theano090
 
-python scripts/apply.py --input data/test.h5 --type number --output output --model modelWeights/Theano1.0.4/TrainedNN_7_6.h5 --name Trained_theano_total
+python scripts/apply.py --input data/814_evensplit_equalfrac_train.h5 --type number --output output --model modelWeights/812_evensplitlayers_equalfrac.h5 --name 812_apply814
 
 python scripts/kfold.py --input data/test.h5 --model share/reference_number.py --name kfold/kfold_theano --select_folds 5 10

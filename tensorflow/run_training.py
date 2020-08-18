@@ -78,10 +78,10 @@ def _main():
     logging.info(f'Loading data from {args.inputData}')
 
     with h5.File(args.inputData, 'r') as data:
-        #data_x = data['input'][()]
-        #data_y = data['target'][()]
-        data_x = data['input'][:5000]
-        data_y = data['target'][:5000]
+        data_x = data['input'][()]
+        data_y = data['target'][()]
+        #data_x = data['input'][:5000]
+        #data_y = data['target'][:5000]
 
     std = np.std(data_x, axis=0, ddof=1)
     std[np.where(std == 0)] = 1
