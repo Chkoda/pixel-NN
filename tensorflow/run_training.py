@@ -80,8 +80,8 @@ def _main():
     with h5.File(args.inputData, 'r') as data:
         data_x = data['input'][()]
         data_y = data['target'][()]
-        #data_x = data['input'][:5000]
-        #data_y = data['target'][:5000]
+        #data_x = data['input'][:10000]
+        #data_y = data['target'][:10000]
 
     std = np.std(data_x, axis=0, ddof=1)
     std[np.where(std == 0)] = 1
@@ -110,7 +110,7 @@ def _main():
 
     model.compile(**compile_args)
 
-    log_dir = "logs/fit" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "/"
+    #log_dir = "logs/fit" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "/"
 
     fit_args = {
         #'batch_size': args.batch_size,
@@ -120,7 +120,7 @@ def _main():
             ModelCheckpoint(args.outputModel+'.h5', save_best_only=True, verbose=2),
             #TensorBoard(log_dir=log_dir, histogram_freq=1)
         ],
-        'verbose': 0,
+        'verbose': 2,
         #'validation_split': 0.1 #not compatible with fit_args when using tensordata
     }
 
