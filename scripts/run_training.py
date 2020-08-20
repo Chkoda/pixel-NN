@@ -122,8 +122,8 @@ def _main():
     fit_args['verbose'] = 1
 
     validation_index = int(data_x.shape[0]*0.1)
-    validationDataSet = tf.data.Dataset.from_tensor_slices((data_x[:validation_index], data_y[:validation_index])).batch(200)
-    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x[validation_index:], data_y[validation_index:])).batch(200)
+    validationDataSet = tf.data.Dataset.from_tensor_slices((data_x[:validation_index], data_y[:validation_index])).batch(60)
+    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x[validation_index:], data_y[validation_index:])).batch(60)
 
     history = model.fit(x=trainDataSet, **fit_args, validation_data=validationDataSet)
 
