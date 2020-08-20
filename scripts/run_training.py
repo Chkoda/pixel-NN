@@ -124,8 +124,6 @@ def _main():
     logging.info('Fitting model')
     fit_args['verbose'] = 1
 
-    validation_index = int(data_x.shape[0]*0.1)
-
     history = model.fit(data_x, data_y, **fit_args)
 
     hpath = name + '.history.h5'
