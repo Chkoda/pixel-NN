@@ -92,16 +92,16 @@ def _main():
     h = OffsetAndScale(offset=-np.mean(data_x, axis=0), scale=1.0/std)(inputs)
 
     for l in range(0, len(args.structure)):
-        h = Dense(args.structure[l], kernel_regularizer=l2(args.regularizer), kernel_initializer=init)(h)
-        h = args.hidden_activation(h) #, alpha=0.1) #for leaky relu
+        h = Dense(args.structure[l], activation=args.hidden_activation, kernel_regularizer=l2(args.regularizer), kernel_initializer=init)(h)
+        #h = args.hidden_activation(h) #, alpha=0.1) #for leaky relu
         
-    output_layer = Dense(data_y.shape[1], kernel_regularizer=l2(args.regularizer), kernel_initializer=init)(h)
-    output_layer = args.output_activation(output_layer)
+    output_layer = Dense(data_y.shape[1], activation=args.output_activation, kernel_regularizer=l2(args.regularizer), kernel_initializer=init)(h)
+    #output_layer = args.output_activation(output_layer)
 
     model = tf.keras.models.Model(inputs=inputs, outputs=output_layer)
 
     print(model.summary())
-    #keras.utils.plot_model(model)
+    keras.utils.plot_model(model)
 
     compile_args = {
         'optimizer': SGD(learning_rate=args.learning_rate, momentum=args.momentum),
@@ -113,23 +113,24 @@ def _main():
     #log_dir = "logs/fit" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "/"
 
     fit_args = {
-        #'batch_size': args.batch_size,
+        'batch_size': args.batch_size,
         'epochs': args.epochs,
         'callbacks': [
             EarlyStopping(monitor='val_loss', patience=args.patience, verbose=1, mode='auto'),
             ModelCheckpoint(args.outputModel+'.h5', save_best_only=True, verbose=2),
             #TensorBoard(log_dir=log_dir, histogram_freq=1)
         ],
-        'verbose': 2,
-        #'validation_split': 0.1 #not compatible with fit_args when using tensordata
+        'verbose': 1,
+        'validation_split': 0.1 #not compatible with fit_args when using tensordata
     }
 
-    validation_index = int(data_x.shape[0]*0.1)
-    validationDataSet = tf.data.Dataset.from_tensor_slices((data_x[:validation_index], data_y[:validation_index])).batch(args.batch_size)
-    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x[validation_index:], data_y[validation_index:])).batch(args.batch_size)
+    history = model.fit(data_x, data_y, **fit_args)
 
-    history = model.fit(x=trainDataSet, validation_data=validationDataSet, **fit_args)
-    #history = model.fit(data_x, data_y, **fit_args)
+    #fit_args.pop('batch_size'), fit_args.pop('validation_split')
+    #validation_index = int(data_x.shape[0]*0.1)
+    #validationDataSet = tf.data.Dataset.from_tensor_slices((data_x[:validation_index], data_y[:validation_index])).batch(args.batch_size)
+    #trainDataSet = tf.data.Dataset.from_tensor_slices((data_x[validation_index:], data_y[validation_index:])).batch(args.batch_size)
+    #history = model.fit(x=trainDataSet, validation_data=validationDataSet, **fit_args)
     
     hpath = args.outputModel + '.history.h5'
     logging.info('Writing fit history to %s', hpath)
