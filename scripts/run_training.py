@@ -87,9 +87,6 @@ def _main():
         data_x = hfile['input'][()]
         data_y = hfile['target'][()]
 
-    data_x = np.array(data_x)
-    data_y = np.array(data_x)
-
     path = _find_py_file(args.model)
     logging.info('Building model from %s', path)
     model, compile_args, fit_args, params = _build_model(path, data_x, data_y)
@@ -124,7 +121,11 @@ def _main():
     logging.info('Fitting model')
     fit_args['verbose'] = 1
 
-    history = model.fit(data_x, data_y, **fit_args)
+    validation_index = int(data_x.shape[0]*0.1)
+    validationDataSet = tf.data.Dataset.from_tensor_slices((data_x[:validation_index], data_y[:validation_index])).batch(60)
+    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x[validation_index:], data_y[validation_index:])).batch(60)
+
+    history = model.fit(x=trainDataSet, **fit_args, validation_data=validationDataSet)
 
     hpath = name + '.history.h5'
     logging.info('Writing fit history to %s', hpath)
