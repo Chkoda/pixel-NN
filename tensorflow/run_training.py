@@ -101,7 +101,7 @@ def _main():
     model = tf.keras.models.Model(inputs=inputs, outputs=output_layer)
 
     print(model.summary())
-    keras.utils.plot_model(model)
+    #keras.utils.plot_model(model)
 
     compile_args = {
         'optimizer': SGD(learning_rate=args.learning_rate, momentum=args.momentum),
