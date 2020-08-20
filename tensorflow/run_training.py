@@ -101,7 +101,7 @@ def _main():
     model = tf.keras.models.Model(inputs=inputs, outputs=output_layer)
 
     print(model.summary())
-    keras.utils.plot_model(model)
+    #keras.utils.plot_model(model)
 
     compile_args = {
         'optimizer': SGD(learning_rate=args.learning_rate, momentum=args.momentum),
@@ -120,7 +120,7 @@ def _main():
             ModelCheckpoint(args.outputModel+'.h5', save_best_only=True, verbose=2),
             #TensorBoard(log_dir=log_dir, histogram_freq=1)
         ],
-        'verbose': 1,
+        'verbose': 2,
         'validation_split': 0.1 #not compatible with fit_args when using tensordata
     }
 
