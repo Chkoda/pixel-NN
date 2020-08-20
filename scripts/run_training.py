@@ -21,18 +21,6 @@ keras.backend.set_floatx('float32')
 
 import datetime
 
-gpus = tf.config.experimental.list_physical_devices('GPU')
-if gpus:
-  try:
-    # Currently, memory growth needs to be the same across GPUs
-    for gpu in gpus:
-      tf.config.experimental.set_memory_growth(gpu, True)
-    logical_gpus = tf.config.experimental.list_logical_devices('GPU')
-    print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
-  except RuntimeError as e:
-    # Memory growth must be set before GPUs have been initialized
-    print(e)
-
 def _find_py_file(path):
 
     if os.path.exists(path):
@@ -76,6 +64,20 @@ def _main():
         level=args.loglevel,
         format='[%(asctime)s %(levelname)s] %(message)s'
     )
+
+    gpus = tf.config.list_physical_devices('GPU')
+    logging.info(gpus)
+
+    if gpus:
+        try:
+            # Currently, memory growth needs to be the same across GPUs
+            for gpu in gpus:
+                tf.config.experimental.set_memory_growth(gpu, True)
+            logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+        except RuntimeError as e:
+            # Memory growth must be set before GPUs have been initialized
+            print(e)
 
     if args.name is None:
         name = os.path.basename(args.model).replace('.py', '')
