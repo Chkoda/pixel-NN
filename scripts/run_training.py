@@ -12,7 +12,7 @@ import tensorflow as tf
 
 import h5py as h5
 import tensorflow.keras as keras
-import cupy as np
+import numpy as np
 import multiprocessing
 
 from tensorflow.keras.callbacks import TensorBoard
