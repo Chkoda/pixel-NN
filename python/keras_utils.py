@@ -4,7 +4,7 @@ import warnings
 import tensorflow as tf
 import tensorflow.keras as keras
 import tensorflow.keras.backend as K
-import numpy as np
+import cupy as np
 
 def load_model(path):
     return keras.models.load_model(
