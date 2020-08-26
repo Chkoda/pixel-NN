@@ -1,6 +1,6 @@
 python scripts/run_training.py --input data/train.h5 --model share/reference_number.py --name output/test_training
 
-python scripts/apply.py --input data/test.h5 --type number --model modelWeights/LGmodelweights.h5 --output output --name appy_LG.h5
+python scripts/apply.py --input data/jz7w_test.h5 --type number --model output/820tf.h5 --output output --name apply_820tf.h5
 
 python scripts/doroc.py --input appy_LG --name applyLG
 
