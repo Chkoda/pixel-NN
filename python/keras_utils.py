@@ -1,5 +1,7 @@
 import logging
 import warnings
+import numpy as np
+np.random.seed(42)
 
 #import tensorflow as tf
 #import tensorflow.keras as keras
@@ -8,7 +10,6 @@ import warnings
 import keras
 import keras.backend as K
 
-import numpy as np
 
 def load_model(path):
     return keras.models.load_model(

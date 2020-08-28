@@ -6,6 +6,10 @@ import logging
 import os
 os.environ['KERAS_BACKEND'] = 'theano'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import numpy as np
+np.random.seed(42)
+import multiprocessing
+import h5py as h5
 
 
 #from importlib.machinery import SourceFileLoader
@@ -15,10 +19,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 import imp
 import keras
-
-import h5py as h5
-import numpy as np
-import multiprocessing
 
 keras.backend.set_floatx('float32')
 
