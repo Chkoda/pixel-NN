@@ -176,13 +176,13 @@ def _do_number(data_x, data_y, pred, thrs):
                                     3 * data_y[:,2]
 
     outdata['Output_number_estimated'][
-        np.where(np.logical_and(pred[:,1] < thrs[0], pred[:,2] < thrs[1]))
+        np.where(np.logical_and(outdata['Output_number'][:,1] < thrs[0], outdata['Output_number'][:,2] < thrs[1]))
     ] = 1
     outdata['Output_number_estimated'][
-        np.where(np.logical_and(pred[:,1] >= thrs[0], pred[:,2] < thrs[1]))
+        np.where(np.logical_and(outdata['Output_number'][:,1] >= thrs[0], outdata['Output_number'][:,2] < thrs[1]))
     ] = 2
     outdata['Output_number_estimated'][
-        np.where(pred[:,2] >= thrs[1])
+        np.where(outdata['Output_number'][:,2] >= thrs[1])
     ] = 3
 
     auxfields = [
