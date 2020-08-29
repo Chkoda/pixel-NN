@@ -1,0 +1,68 @@
+Using Theano backend.
+Using Theano backend.
+Using Theano backend.
+[2020-08-25 18:31:44,609 INFO] Loading data from ../data/824_evensplit_equalfrac_train.independant.h5
+Traceback (most recent call last):
+  File "scripts/run_training.py", line 144, in <module>
+    _main()
+  File "scripts/run_training.py", line 93, in _main
+    with h5.File(args.input, 'r') as hfile:
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 408, in __init__
+    swmr=swmr)
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 173, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 88, in h5py.h5f.open
+IOError: Unable to open file (unable to open file: name = '../data/824_evensplit_equalfrac_train.independant.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+[2020-08-25 18:31:44,619 INFO] Loading data from ../data/811_evensplit_realfrac_train.h5
+Traceback (most recent call last):
+  File "scripts/run_training.py", line 144, in <module>
+    _main()
+  File "scripts/run_training.py", line 93, in _main
+    with h5.File(args.input, 'r') as hfile:
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 408, in __init__
+    swmr=swmr)
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 173, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 88, in h5py.h5f.open
+IOError: Unable to open file (unable to open file: name = '../data/811_evensplit_realfrac_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+[2020-08-25 18:31:44,648 INFO] Loading data from ../data/812_evensplit_equalfrac_train.h5
+Traceback (most recent call last):
+  File "scripts/run_training.py", line 144, in <module>
+    _main()
+  File "scripts/run_training.py", line 93, in _main
+    with h5.File(args.input, 'r') as hfile:
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 408, in __init__
+    swmr=swmr)
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 173, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 88, in h5py.h5f.open
+IOError: Unable to open file (unable to open file: name = '../data/812_evensplit_equalfrac_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+srun: error: cgpu18: task 0: Exited with exit code 1
+srun: Terminating job step 971010.3
+srun: error: cgpu16: task 0: Exited with exit code 1
+srun: Terminating job step 971010.1
+srun: error: cgpu17: task 0: Exited with exit code 1
+srun: Terminating job step 971010.2
+Using Theano backend.
+[2020-08-25 18:31:48,424 INFO] Loading data from ../data/814_evensplit_equalfrac_train.h5
+Traceback (most recent call last):
+  File "scripts/run_training.py", line 144, in <module>
+    _main()
+  File "scripts/run_training.py", line 93, in _main
+    with h5.File(args.input, 'r') as hfile:
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 408, in __init__
+    swmr=swmr)
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 173, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 88, in h5py.h5f.open
+IOError: Unable to open file (unable to open file: name = '../data/814_evensplit_equalfrac_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+srun: error: cgpu02: task 0: Exited with exit code 1
+srun: Terminating job step 971010.0

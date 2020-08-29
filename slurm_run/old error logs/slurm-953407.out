@@ -1,0 +1,187 @@
+2020-08-18 12:58:59.710247: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-08-18 12:58:59.721633: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-08-18 12:58:59.775669: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 0 with properties: 
+pciBusID: 0000:1b:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-08-18 12:58:59.777440: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 0 with properties: 
+pciBusID: 0000:1b:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-08-18 12:58:59.777799: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-08-18 12:58:59.780300: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-08-18 12:58:59.780562: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-08-18 12:58:59.782743: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-08-18 12:58:59.784916: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-08-18 12:58:59.786859: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-08-18 12:58:59.787302: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-08-18 12:58:59.789772: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-08-18 12:58:59.790149: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-08-18 12:58:59.792525: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-08-18 12:58:59.793675: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-08-18 12:58:59.794954: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-08-18 12:58:59.799734: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-08-18 12:58:59.802044: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1703] Adding visible gpu devices: 0
+2020-08-18 12:58:59.802457: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+2020-08-18 12:58:59.810273: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-08-18 12:58:59.812546: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1703] Adding visible gpu devices: 0
+2020-08-18 12:58:59.812895: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+2020-08-18 12:58:59.820167: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 2400000000 Hz
+2020-08-18 12:58:59.820273: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x2aab78000b10 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-18 12:58:59.820280: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-08-18 12:58:59.824223: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 2400000000 Hz
+2020-08-18 12:58:59.824325: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x2aab78000b10 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-18 12:58:59.824332: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-08-18 12:59:00.093498: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x555558f11870 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-08-18 12:59:00.093517: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+2020-08-18 12:59:00.094946: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 0 with properties: 
+pciBusID: 0000:1b:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-08-18 12:59:00.094996: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-08-18 12:59:00.095009: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-08-18 12:59:00.095018: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-08-18 12:59:00.095027: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-08-18 12:59:00.095035: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-08-18 12:59:00.095045: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-08-18 12:59:00.095054: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-08-18 12:59:00.097283: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1703] Adding visible gpu devices: 0
+2020-08-18 12:59:00.097332: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-08-18 12:59:00.099109: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-08-18 12:59:00.099119: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1108]      0 
+2020-08-18 12:59:00.099126: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1121] 0:   N 
+2020-08-18 12:59:00.101361: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1247] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14841 MB memory) -> physical GPU (device: 0, name: Tesla V100-SXM2-16GB, pci bus id: 0000:1b:00.0, compute capability: 7.0)
+2020-08-18 12:59:00.104529: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x555558f11380 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-08-18 12:59:00.104541: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-SXM2-16GB, Compute Capability 7.0
+2020-08-18 12:59:00.105744: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 0 with properties: 
+pciBusID: 0000:1b:00.0 name: Tesla V100-SXM2-16GB computeCapability: 7.0
+coreClock: 1.53GHz coreCount: 80 deviceMemorySize: 15.78GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-08-18 12:59:00.105788: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-08-18 12:59:00.105801: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-08-18 12:59:00.105810: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-08-18 12:59:00.105825: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-08-18 12:59:00.105835: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-08-18 12:59:00.105860: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-08-18 12:59:00.105868: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-08-18 12:59:00.108091: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1703] Adding visible gpu devices: 0
+2020-08-18 12:59:00.108132: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-08-18 12:59:00.109752: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-08-18 12:59:00.109763: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1108]      0 
+2020-08-18 12:59:00.109769: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1121] 0:   N 
+2020-08-18 12:59:00.112110: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1247] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14604 MB memory) -> physical GPU (device: 0, name: Tesla V100-SXM2-16GB, pci bus id: 0000:1b:00.0, compute capability: 7.0)
+[2020-08-18 12:59:00,112 INFO] Loading data from ../data/814_evensplit_equalfrac_train.h5
+[2020-08-18 12:59:00,114 INFO] Loading data from ../data/814_evensplit_equalfrac_train.h5
+2020-08-18 13:00:18.767621: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-08-18 13:00:49.098109: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+1 Physical GPUs, 1 Logical GPUs
+Model: "model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 60)]              0         
+_________________________________________________________________
+offset_and_scale (OffsetAndS (None, 60)                0         
+_________________________________________________________________
+dense (Dense)                (None, 25)                1525      
+_________________________________________________________________
+tf_op_layer_Mul (TensorFlowO [(None, 25)]              0         
+_________________________________________________________________
+tf_op_layer_Sigmoid (TensorF [(None, 25)]              0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 20)                520       
+_________________________________________________________________
+tf_op_layer_Mul_1 (TensorFlo [(None, 20)]              0         
+_________________________________________________________________
+tf_op_layer_Sigmoid_1 (Tenso [(None, 20)]              0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 3)                 63        
+_________________________________________________________________
+tf_op_layer_Mul_2 (TensorFlo [(None, 3)]               0         
+_________________________________________________________________
+tf_op_layer_Sigmoid_2 (Tenso [(None, 3)]               0         
+=================================================================
+Total params: 2,108
+Trainable params: 2,108
+Non-trainable params: 0
+_________________________________________________________________
+None
+Epoch 1/20
+
+Epoch 00001: val_loss improved from inf to 2.69630, saving model to modelWeights/tf_814.h5
+180000/180000 - 533s - loss: 0.4867 - val_loss: 2.6963
+1 Physical GPUs, 1 Logical GPUs
+Model: "model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 60)]              0         
+_________________________________________________________________
+offset_and_scale (OffsetAndS (None, 60)                0         
+_________________________________________________________________
+dense (Dense)                (None, 25)                1525      
+_________________________________________________________________
+tf_op_layer_Mul (TensorFlowO [(None, 25)]              0         
+_________________________________________________________________
+tf_op_layer_Sigmoid (TensorF [(None, 25)]              0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 20)                520       
+_________________________________________________________________
+tf_op_layer_Mul_1 (TensorFlo [(None, 20)]              0         
+_________________________________________________________________
+tf_op_layer_Sigmoid_1 (Tenso [(None, 20)]              0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 3)                 63        
+_________________________________________________________________
+tf_op_layer_Mul_2 (TensorFlo [(None, 3)]               0         
+_________________________________________________________________
+tf_op_layer_Sigmoid_2 (Tenso [(None, 3)]               0         
+=================================================================
+Total params: 2,108
+Trainable params: 2,108
+Non-trainable params: 0
+_________________________________________________________________
+None
+Epoch 1/20
+
+Epoch 00001: val_loss improved from inf to 2.69738, saving model to modelWeights/tf_814.h5
+180000/180000 - 547s - loss: 0.4867 - val_loss: 2.6974
+Epoch 2/20
+
+Epoch 00002: val_loss improved from 2.69630 to 2.61804, saving model to modelWeights/tf_814.h5
+180000/180000 - 554s - loss: 0.4635 - val_loss: 2.6180
+Epoch 2/20
+
+Epoch 00002: val_loss improved from 2.69738 to 2.61520, saving model to modelWeights/tf_814.h5
+180000/180000 - 548s - loss: 0.4635 - val_loss: 2.6152
+Epoch 3/20
+
+Epoch 00003: val_loss improved from 2.61804 to 2.57778, saving model to modelWeights/tf_814.h5
+180000/180000 - 557s - loss: 0.4572 - val_loss: 2.5778
+Epoch 3/20
+
+Epoch 00003: val_loss improved from 2.61520 to 2.57826, saving model to modelWeights/tf_814.h5
+180000/180000 - 558s - loss: 0.4572 - val_loss: 2.5783
+Epoch 4/20
+
+Epoch 00004: val_loss improved from 2.57778 to 2.56728, saving model to modelWeights/tf_814.h5
+180000/180000 - 557s - loss: 0.4541 - val_loss: 2.5673
+Epoch 4/20
+
+Epoch 00004: val_loss improved from 2.57826 to 2.57111, saving model to modelWeights/tf_814.h5
+180000/180000 - 561s - loss: 0.4541 - val_loss: 2.5711
+Epoch 5/20
+
+Epoch 00005: val_loss improved from 2.56728 to 2.42766, saving model to modelWeights/tf_814.h5
+180000/180000 - 562s - loss: 0.4523 - val_loss: 2.4277
+Epoch 5/20
+
+Epoch 00005: val_loss improved from 2.57111 to 2.43656, saving model to modelWeights/tf_814.h5
+180000/180000 - 558s - loss: 0.4523 - val_loss: 2.4366
+Epoch 6/20
+
+Epoch 00006: val_loss did not improve from 2.42766
+180000/180000 - 557s - loss: 0.4528 - val_loss: 2.5434
+Epoch 6/20
+
+Epoch 00006: val_loss did not improve from 2.43656
+180000/180000 - 561s - loss: 0.4530 - val_loss: 2.5482
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 953407.0 ON cgpu16 CANCELLED AT 2020-08-18T13:59:02 DUE TO TIME LIMIT ***
+slurmstepd: error: *** JOB 953407 ON cgpu16 CANCELLED AT 2020-08-18T13:59:02 DUE TO TIME LIMIT ***

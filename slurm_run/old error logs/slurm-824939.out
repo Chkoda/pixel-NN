@@ -1,0 +1,214 @@
+Using Theano backend.
+[2020-07-17 14:15:11,309 INFO] Loading data from /global/cfs/cdirs/atlas/achkodrov/data/train.h5
+[2020-07-17 14:15:26,289 INFO] Building model from /global/cfs/cdirs/atlas/achkodrov/pixel-NN/share/reference_number.py
+[2020-07-17 14:15:31,482 INFO] Compiling model
+[2020-07-17 14:15:31,493 INFO] Fitting model
+WARNING (theano.tensor.blas): We did not find a dynamic library in the library_dir of the library we use for blas. If you use ATLAS, make sure to compile it with dynamics library.
+[2020-07-17 14:15:32,244 WARNING] We did not find a dynamic library in the library_dir of the library we use for blas. If you use ATLAS, make sure to compile it with dynamics library.
+Train on 11475000 samples, validate on 1275000 samples
+Epoch 1/1000
+ - 78s - loss: 0.5210 - val_loss: 0.4745
+
+Epoch 00001: val_loss improved from inf to 0.47448, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 2/1000
+ - 77s - loss: 0.4781 - val_loss: 0.4704
+
+Epoch 00002: val_loss improved from 0.47448 to 0.47035, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 3/1000
+ - 76s - loss: 0.4695 - val_loss: 0.4722
+
+Epoch 00003: val_loss did not improve from 0.47035
+Epoch 4/1000
+ - 76s - loss: 0.4652 - val_loss: 0.4619
+
+Epoch 00004: val_loss improved from 0.47035 to 0.46192, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 5/1000
+ - 76s - loss: 0.4628 - val_loss: 0.4718
+
+Epoch 00005: val_loss did not improve from 0.46192
+Epoch 6/1000
+ - 76s - loss: 0.4612 - val_loss: 0.4597
+
+Epoch 00006: val_loss improved from 0.46192 to 0.45970, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 7/1000
+ - 76s - loss: 0.4601 - val_loss: 0.4610
+
+Epoch 00007: val_loss did not improve from 0.45970
+Epoch 8/1000
+ - 76s - loss: 0.4591 - val_loss: 0.4602
+
+Epoch 00008: val_loss did not improve from 0.45970
+Epoch 9/1000
+ - 77s - loss: 0.4583 - val_loss: 0.4646
+
+Epoch 00009: val_loss did not improve from 0.45970
+Epoch 10/1000
+ - 77s - loss: 0.4576 - val_loss: 0.4548
+
+Epoch 00010: val_loss improved from 0.45970 to 0.45484, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 11/1000
+ - 83s - loss: 0.4570 - val_loss: 0.4528
+
+Epoch 00011: val_loss improved from 0.45484 to 0.45275, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 12/1000
+ - 84s - loss: 0.4566 - val_loss: 0.4537
+
+Epoch 00012: val_loss did not improve from 0.45275
+Epoch 13/1000
+ - 85s - loss: 0.4562 - val_loss: 0.4561
+
+Epoch 00013: val_loss did not improve from 0.45275
+Epoch 14/1000
+ - 86s - loss: 0.4558 - val_loss: 0.4518
+
+Epoch 00014: val_loss improved from 0.45275 to 0.45182, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 15/1000
+ - 85s - loss: 0.4555 - val_loss: 0.4531
+
+Epoch 00015: val_loss did not improve from 0.45182
+Epoch 16/1000
+ - 85s - loss: 0.4552 - val_loss: 0.4511
+
+Epoch 00016: val_loss improved from 0.45182 to 0.45114, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 17/1000
+ - 85s - loss: 0.4550 - val_loss: 0.4560
+
+Epoch 00017: val_loss did not improve from 0.45114
+Epoch 18/1000
+ - 85s - loss: 0.4549 - val_loss: 0.4568
+
+Epoch 00018: val_loss did not improve from 0.45114
+Epoch 19/1000
+ - 85s - loss: 0.4547 - val_loss: 0.4498
+
+Epoch 00019: val_loss improved from 0.45114 to 0.44981, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 20/1000
+ - 85s - loss: 0.4544 - val_loss: 0.4499
+
+Epoch 00020: val_loss did not improve from 0.44981
+Epoch 21/1000
+ - 85s - loss: 0.4543 - val_loss: 0.4518
+
+Epoch 00021: val_loss did not improve from 0.44981
+Epoch 22/1000
+ - 86s - loss: 0.4541 - val_loss: 0.4518
+
+Epoch 00022: val_loss did not improve from 0.44981
+Epoch 23/1000
+ - 86s - loss: 0.4539 - val_loss: 0.4509
+
+Epoch 00023: val_loss did not improve from 0.44981
+Epoch 24/1000
+ - 86s - loss: 0.4537 - val_loss: 0.4501
+
+Epoch 00024: val_loss did not improve from 0.44981
+Epoch 25/1000
+ - 86s - loss: 0.4537 - val_loss: 0.4558
+
+Epoch 00025: val_loss did not improve from 0.44981
+Epoch 26/1000
+ - 87s - loss: 0.4535 - val_loss: 0.4538
+
+Epoch 00026: val_loss did not improve from 0.44981
+Epoch 27/1000
+ - 87s - loss: 0.4534 - val_loss: 0.4660
+
+Epoch 00027: val_loss did not improve from 0.44981
+Epoch 28/1000
+ - 87s - loss: 0.4538 - val_loss: 0.4513
+
+Epoch 00028: val_loss did not improve from 0.44981
+Epoch 29/1000
+ - 87s - loss: 0.4543 - val_loss: 0.4515
+
+Epoch 00029: val_loss did not improve from 0.44981
+Epoch 30/1000
+ - 87s - loss: 0.4541 - val_loss: 0.4500
+
+Epoch 00030: val_loss did not improve from 0.44981
+Epoch 31/1000
+ - 86s - loss: 0.4541 - val_loss: 0.4557
+
+Epoch 00031: val_loss did not improve from 0.44981
+Epoch 32/1000
+ - 86s - loss: 0.4543 - val_loss: 0.4500
+
+Epoch 00032: val_loss did not improve from 0.44981
+Epoch 33/1000
+ - 86s - loss: 0.4539 - val_loss: 0.4563
+
+Epoch 00033: val_loss did not improve from 0.44981
+Epoch 34/1000
+ - 86s - loss: 0.4538 - val_loss: 0.4501
+
+Epoch 00034: val_loss did not improve from 0.44981
+Epoch 35/1000
+ - 86s - loss: 0.4537 - val_loss: 0.4498
+
+Epoch 00035: val_loss did not improve from 0.44981
+Epoch 36/1000
+ - 86s - loss: 0.4537 - val_loss: 0.4517
+
+Epoch 00036: val_loss did not improve from 0.44981
+Epoch 37/1000
+ - 86s - loss: 0.4536 - val_loss: 0.4513
+
+Epoch 00037: val_loss did not improve from 0.44981
+Epoch 38/1000
+ - 86s - loss: 0.4536 - val_loss: 0.4513
+
+Epoch 00038: val_loss did not improve from 0.44981
+Epoch 39/1000
+ - 86s - loss: 0.4535 - val_loss: 0.4521
+
+Epoch 00039: val_loss did not improve from 0.44981
+Epoch 40/1000
+ - 86s - loss: 0.4535 - val_loss: 0.4512
+
+Epoch 00040: val_loss did not improve from 0.44981
+Epoch 41/1000
+ - 86s - loss: 0.4534 - val_loss: 0.4510
+
+Epoch 00041: val_loss did not improve from 0.44981
+Epoch 42/1000
+ - 86s - loss: 0.4534 - val_loss: 0.4492
+
+Epoch 00042: val_loss improved from 0.44981 to 0.44922, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 43/1000
+ - 86s - loss: 0.4534 - val_loss: 0.4521
+
+Epoch 00043: val_loss did not improve from 0.44922
+Epoch 44/1000
+ - 87s - loss: 0.4533 - val_loss: 0.4489
+
+Epoch 00044: val_loss improved from 0.44922 to 0.44891, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 45/1000
+ - 86s - loss: 0.4533 - val_loss: 0.4488
+
+Epoch 00045: val_loss improved from 0.44891 to 0.44876, saving model to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.h5
+Epoch 46/1000
+ - 87s - loss: 0.4532 - val_loss: 0.4493
+
+Epoch 00046: val_loss did not improve from 0.44876
+Epoch 47/1000
+ - 87s - loss: 0.4533 - val_loss: 0.4507
+
+Epoch 00047: val_loss did not improve from 0.44876
+Epoch 48/1000
+ - 87s - loss: 0.4532 - val_loss: 0.4512
+
+Epoch 00048: val_loss did not improve from 0.44876
+Epoch 49/1000
+ - 87s - loss: 0.4531 - val_loss: 0.4511
+
+Epoch 00049: val_loss did not improve from 0.44876
+Epoch 50/1000
+ - 87s - loss: 0.4531 - val_loss: 0.4530
+
+Epoch 00050: val_loss did not improve from 0.44876
+Epoch 51/1000
+ - 86s - loss: 0.4531 - val_loss: 0.4520
+[2020-07-17 15:27:04,453 INFO] Writing fit history to /global/cfs/cdirs/atlas/achkodrov/pixel-NN/output/TrainedNN_7_6.history.h5
+Epoch 00050: early stopping
+
+Epoch 00051: val_loss did not improve from 0.44876

@@ -1,0 +1,17 @@
+Using Theano backend.
+[2020-08-25 18:31:43,075 INFO] Loading data from ../data/824_evensplit_equalfrac_train.h5
+Traceback (most recent call last):
+  File "scripts/run_training.py", line 144, in <module>
+    _main()
+  File "scripts/run_training.py", line 93, in _main
+    with h5.File(args.input, 'r') as hfile:
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 408, in __init__
+    swmr=swmr)
+  File "/global/homes/c/chkoda/miniconda2/envs/py2theano/lib/python2.7/site-packages/h5py/_hl/files.py", line 173, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 88, in h5py.h5f.open
+IOError: Unable to open file (unable to open file: name = '../data/824_evensplit_equalfrac_train.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+srun: error: cgpu15: task 0: Exited with exit code 1
+srun: Terminating job step 971009.0
