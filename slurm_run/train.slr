@@ -2,7 +2,7 @@
 #SBATCH -C gpu
 #SBATCH -N 1
 #SBATCH -G 1
-#SBATCH -t 01:30:00
+#SBATCH -t 02:30:00
 #SBATCH -q regular
 #SBATCH -J runtest
 #SBATCH -A m1759
