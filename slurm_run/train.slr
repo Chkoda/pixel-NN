@@ -18,4 +18,4 @@ conda activate py2theano
 
 #run the application:
 cd /global/cfs/cdirs/atlas/achkodrov/pixel-NN/
-srun --hint=nomultithread -N 1 -G 1 python scripts/run_training.py --input ../data/824_evensplit_equalfrac_train.h5 --model share/reference_number.py --name modelWeights/824
+srun --hint=nomultithread -N 1 -G 1 python scripts/run_training.py --input data/824_train.h5 --model share/reference_number.py --name modelWeights/824sigmoid_newstruct
