@@ -20,6 +20,8 @@ import h5py as h5
 import imp
 import keras
 
+from keras.utils import plot_model
+
 keras.backend.set_floatx('float32')
 
 
@@ -124,17 +126,23 @@ def _main():
 
     logging.info('Compiling model')
     model.compile(**compile_args)
-
+    plot_model(model, to_file='model.png', show_shapes=True)
     logging.info('Fitting model')
-    fit_args['verbose'] = 2
+    fit_args['verbose'] = 1
 
     #trainDataSet = tf.data.Dataset.from_tensor_slices((data_x, data_y)).batch(60)
     #history = model.fit(trainDataSet, **fit_args)
     
     history = model.fit(data_x, data_y, **fit_args)
+    model.save('lwnntest.h5')
+    model.save_weights('lwtnnweights.h5')
+    with open("lwtnnjson.json", 'w') as ofile:
+        ofile.write(model.to_json())
 
     hpath = name + '.history.h5'
     logging.info('Writing fit history to %s', hpath)
+
+
     with h5.File(hpath, 'w') as hfile:
         for key, val in history.history.items():
             hfile.create_dataset(key, data=np.array(val))
