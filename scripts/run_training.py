@@ -126,7 +126,7 @@ def _main():
 
     logging.info('Compiling model')
     model.compile(**compile_args)
-    plot_model(model, to_file='model.png', show_shapes=True)
+    #plot_model(model, to_file='model.png', show_shapes=True)
     logging.info('Fitting model')
     fit_args['verbose'] = 1
 
@@ -134,10 +134,14 @@ def _main():
     #history = model.fit(trainDataSet, **fit_args)
     
     history = model.fit(data_x, data_y, **fit_args)
+    model.save(name + '_final.h5')
+    '''
     model.save('lwnntest.h5')
     model.save_weights('lwtnnweights.h5')
     with open("lwtnnjson.json", 'w') as ofile:
         ofile.write(model.to_json())
+    '''
+    
 
     hpath = name + '.history.h5'
     logging.info('Writing fit history to %s', hpath)
