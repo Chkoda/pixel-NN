@@ -67,7 +67,7 @@ def simple_model(data_x,
 	'batch_size': minibatch_size,
         'epochs': 1000,
         'callbacks': [
-            ThresholdEarlyStopping(verbose=50, min_epochs=1)
+            ThresholdEarlyStopping(verbose=1, min_epochs=50)
         ],
 	'validation_split': 0.1,
     }

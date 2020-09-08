@@ -128,7 +128,7 @@ def _main():
     model.compile(**compile_args)
     #plot_model(model, to_file='model.png', show_shapes=True)
     logging.info('Fitting model')
-    fit_args['verbose'] = 1
+    fit_args['verbose'] = 2
 
     #trainDataSet = tf.data.Dataset.from_tensor_slices((data_x, data_y)).batch(60)
     #history = model.fit(trainDataSet, **fit_args)
