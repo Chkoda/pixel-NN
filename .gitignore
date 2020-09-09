@@ -62,3 +62,5 @@ apply
 output/813one_applyjz7w.h5
 output/813two_applyjz7w.h5
 output/newapply/*
+output/824_manual_offset_apply.h5
+output/824_no_offset_apply.h5

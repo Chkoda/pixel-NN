@@ -18,7 +18,7 @@ import sys
 sys.path.append('python')
 
 import keras_utils
-from keras_utils import OffsetAndScale, _sigmoid2
+#from keras_utils import OffsetAndScale, _sigmoid2
 
 #from run_training import _build_model
 
@@ -40,10 +40,7 @@ def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
 
     model = keras.models.load_model(
-        path,
-        custom_objects={
-            name: getattr(keras_utils, name) for name in dir(keras_utils)
-        }
+        path
     )
     
     '''
