@@ -4,6 +4,7 @@
 /data
 \logs
 /output/theano_kfold/*.h5
+/output/*
 
 roc_vals.h5
 output/roc_vals_1epoch.h5
