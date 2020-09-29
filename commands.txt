@@ -1,0 +1,10 @@
+python scripts/run_training.py --input data/train.h5 --model share/reference_number.py --name output/test_training
+
+python scripts/apply.py --input data/jz7w_test.h5 --type number --model output/820tf.h5 --output output --name apply_820tf.h5
+
+python scripts/doroc.py --input appy_LG --name applyLG
+
+def f1(x): return 0.0 * x
+    def f2(x): return 0.0 * x + 1
+    def f3(x): return 1.0 / (1.0 + tf.math.exp(-2*x))
+    return tf.case([(tf.math.greater_equal(-2*x, MAXEXP), lambda: f1(x)), (tf.math.greater_equal(2* x, MAXEXP), lambda: f2(x))], default=lambda: f3(x))

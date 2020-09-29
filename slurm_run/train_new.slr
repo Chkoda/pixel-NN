@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH -C gpu
+#SBATCH -N 1
+#SBATCH -G 1
+#SBATCH -t 01:00:00
+#SBATCH -q regular
+#SBATCH -J runtest
+#SBATCH -A m1759
+#SBATCH --mail-user=chkoda@uw.edu
+#SBATCH --mail-type=ALL
+
+
+#set up environment
+module load gcc
+module load cmake
+module load python/3.7-anaconda-2019.10
+module load tensorflow/gpu-2.2.0-py37
+#source activate py2theano
+
+
+#run the application:
+cd /global/cfs/cdirs/atlas/achkodrov/pixel-NN/
+srun --hint=nomultithread -N 1 -G 1 python tensorflow/run_training.py --inputData ../data/814_evensplit_equalfrac_train.h5 --outputModel modelWeights/tf_814
