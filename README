@@ -1,20 +1,20 @@
 Pixel NN Usage --- Updated September 29th, 2020
-Dependencies
-python=2.7.18
-keras==2.3.1
-numpy==1.16.6
-scikit-learn==0.20.4
-Theano==1.0.4
+Dependencies:
+	python=2.7.18
+	keras==2.3.1
+	numpy==1.16.6
+	scikit-learn==0.20.4
+	Theano==1.0.4
 The h5’s appear magically (written from AOD) containing these values:
-	7x7 discretized matrix of charges obtained from the calibration of time-over-threshold values measured by the pixel sensors and centered on the charge centroid. The charge matrix is flattened into a length 49 vector in row-major order. (49)
-	7 length vector of pixel pitches in the local Y direction as the pixel size is not constant in this direction. The positions are measured in a frame of reference local to the pixel sensor considered, in which the local X and Y directions correspond to the transverse and longitudinal directions respectively. (7)
-	0 or 2 or -2 encoding the pixel detector region (barrel, end cap, or back endcap). (1)
-	An integer variable (0,1,2,3) representing the cylinder (barrel) or disk (endcap) layer. There are three end cap layers for each side and four barrel layers. The 1st barrel layer is the insertable b-layer and has a different construction with finer resolution than the rest of the barrel. (1)
-	φ and θ angles of incidence for the charged particle going through the cluster. (2)
-	Total of 60 input features (49 + 7 + 1 + 1 + 2) for each cluster being considered.
+	- 7x7 discretized matrix of charges obtained from the calibration of time-over-threshold values measured by the pixel sensors and centered on the charge centroid. The charge matrix is flattened into a length 49 vector in row-major order. (49)
+	- 7 length vector of pixel pitches in the local Y direction as the pixel size is not constant in this direction. The positions are measured in a frame of reference local to the pixel sensor considered, in which the local X and Y directions correspond to the transverse and longitudinal directions respectively. (7)
+	- 0 or 2 or -2 encoding the pixel detector region (barrel, end cap, or back endcap). (1)
+	- An integer variable (0,1,2,3) representing the cylinder (barrel) or disk (endcap) layer. There are three end cap layers for each side and four barrel layers. The 1st barrel layer is the insertable b-layer and has a different construction with finer resolution than the rest of the barrel. (1)
+	- φ and θ angles of incidence for the charged particle going through the cluster. (2)
+Total of 60 input features (49 + 7 + 1 + 1 + 2) for each cluster being considered.
 
 The output vector for inference on one cluster is of the shape (1, 3) in the following format:
-	[probability of 1particle, probability of 2particle, probability of 3particle]
+	- [probability of 1particle, probability of 2particle, probability of 3particle]
 
 From the master directory of Pixel-NN, run this command to train the number network. Generates a model.h5 file with the specified name.
 python scripts/run_training.py --input $Path_To_Train_Data(.h5)$ --model share/reference_number.py --name $Name_Of_Model$
