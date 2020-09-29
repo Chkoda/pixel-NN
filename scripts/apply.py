@@ -2,41 +2,69 @@
 import argparse
 import logging
 import os
+os.environ['KERAS_BACKEND'] = 'theano'
 
-import tensorflow as tf
+#import tensorflow as tf
+#import tensorflow.keras as keras
 
-import tensorflow.keras as keras
+import keras
+from keras.utils import plot_model
+import imp
+
 import numpy as np
 import h5py as h5
 
 import sys
 sys.path.append('python')
-sys.path.append('scripts')
 
-import keras_utils, utils
-from run_training import _build_model
+import keras_utils
+#from keras_utils import OffsetAndScale, _sigmoid2
+
+#from run_training import _build_model
 
 logging.basicConfig(
     level='INFO',
     format='[%(asctime)s %(levelname)s %(module)s.%(funcName)s] %(message)s'
 )
 
+def _build_model(path, data_x, data_y):
+    """ Load a model from a .py source """
+    #defm = SourceFileLoader('model_def', path).load_module()
+    defm = imp.load_source('model_def', path)
+    if 'build_model' not in dir(defm):
+        raise RuntimeError("build_model() function not defined in '%s'" % path)
+    buildf = defm.build_model
+    return buildf(data_x, data_y)
 
 def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
-    
-    #LOADING 1
-    #model = keras.models.load_model(
-    #   model,
-    #    custom_objects={
-    #        name: getattr(keras_utils, name) for name in dir(keras_utils)
-    #    }
-    #)
 
-    #LOADING 2
+    model = keras.models.load_model(
+        path
+    )
+    
+    '''
     model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
     model.compile(**compile_args)
-    model.load_weights(path)
+    #model.load_weights(path)
+    print(model.summary())
+    '''
+    '''
+    model_json = model.to_json()
+    with open("modelWeights/noOffsetScaleconfig.json", "w") as json_file:
+        json_file.write(model_json)
+    #model.save_weights('modelWeights/LGmodelweights.h5')
+    '''
+    '''
+    # load json and create model
+    json_file = open('modelWeights/noOffsetScaleconfig.json', 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+    model = keras.models.model_from_json(loaded_model_json)
+    # load weights into new model
+    model.load_weights("modelWeights/LGmodelweights.h5")
+    print("Loaded model from disk")
+    '''
 
     logging.info('Fetching input data for %s', nntype)
     #x_branches, _ = utils.get_branches(nntype)
@@ -55,12 +83,12 @@ def _get_args():
     args.add_argument('--input', required=True)
     args.add_argument('--type', required=True, choices=['number', 'pos1', 'pos2', 'pos3'])
     args.add_argument('--output')
+    args.add_argument('--name', default='apply_outdata')
     args.add_argument('--ITk', action='store_true')
     args.add_argument('--pitchX', type=float, default=0.05)
     args.add_argument('--pitchY', type=float, default=None) # None == variable
     args.add_argument('--number-thresholds', type=float, nargs=2, default=[0.6, 0.2])
     args.add_argument('--max-clusters', type=int, default=None)
-    args.add_argument('--name')
 
     grp = args.add_mutually_exclusive_group(required=True)
     grp.add_argument('--model')
@@ -74,11 +102,12 @@ def _main():
 
     args = _get_args()
 
-
     logging.info('Loading data from %s', args.input)
     with h5.File(args.input, 'r') as data:
         data_x = data['input'][()]
         data_y = data['target'][()]
+        #data_x = data['input'][:100]
+        #data_y = data['target'][:100]
     
     #data = root_numpy.root2array(args.input, stop=args.max_clusters)
 
@@ -114,7 +143,7 @@ def _main():
 
     logging.info('Saving results to %s', outpath)
 
-    with h5.File(f'{outpath}/{args.name}', 'w') as hfile:
+    with h5.File('{}/{}.h5'.format(outpath, args.name), 'w') as hfile:
         for key in outdata.dtype.names:
             hfile.create_dataset(
                 key,

@@ -2,24 +2,44 @@
 """ run_training.py: driver script to train a neural network """
 
 import argparse
-from importlib.machinery import SourceFileLoader
 import logging
 import os
-
-os.environ['KERAS_BACKEND'] = 'tensorflow'
+os.environ['KERAS_BACKEND'] = 'theano'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-import tensorflow as tf
-
-import h5py as h5
-import tensorflow.keras as keras
 import numpy as np
+np.random.seed(42)
 import multiprocessing
+import h5py as h5
 
-from tensorflow.keras.callbacks import TensorBoard
+
+#from importlib.machinery import SourceFileLoader
+#import tensorflow as tf
+#import tensorflow.keras as keras
+#from tensorflow.keras.callbacks import TensorBoard
+
+import imp
+import keras
+
+from keras.utils import plot_model
+
 keras.backend.set_floatx('float32')
 
 
 import datetime
+
+'''
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+  try:
+    # Currently, memory growth needs to be the same across GPUs
+    for gpu in gpus:
+      tf.config.experimental.set_memory_growth(gpu, True)
+    logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+    print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+  except RuntimeError as e:
+    # Memory growth must be set before GPUs have been initialized
+    print(e)
+'''
 
 def _find_py_file(path):
 
@@ -40,7 +60,8 @@ def _find_py_file(path):
 
 def _build_model(path, data_x, data_y):
     """ Load a model from a .py source """
-    defm = SourceFileLoader('model_def', path).load_module()
+    #defm = SourceFileLoader('model_def', path).load_module()
+    defm = imp.load_source('model_def', path)
     if 'build_model' not in dir(defm):
         raise RuntimeError("build_model() function not defined in '%s'" % path)
     buildf = defm.build_model
@@ -64,20 +85,6 @@ def _main():
         level=args.loglevel,
         format='[%(asctime)s %(levelname)s] %(message)s'
     )
-
-    gpus = tf.config.list_physical_devices('GPU')
-    logging.info(gpus)
-
-    if gpus:
-        try:
-            # Currently, memory growth needs to be the same across GPUs
-            for gpu in gpus:
-                tf.config.experimental.set_memory_growth(gpu, True)
-            logical_gpus = tf.config.list_logical_devices('GPU')
-            logging.info(f'{len(gpus)} Physical GPUs, {len(logical_gpus)} Logical GPUs')
-        except RuntimeError as e:
-            # Memory growth must be set before GPUs have been initialized
-            print(e)
 
     if args.name is None:
         name = os.path.basename(args.model).replace('.py', '')
@@ -119,18 +126,27 @@ def _main():
 
     logging.info('Compiling model')
     model.compile(**compile_args)
-
+    #plot_model(model, to_file='model.png', show_shapes=True)
     logging.info('Fitting model')
-    fit_args['verbose'] = 1
+    fit_args['verbose'] = 2
 
-    validation_index = int(data_x.shape[0]*0.1)
-    validationDataSet = tf.data.Dataset.from_tensor_slices((data_x[:validation_index], data_y[:validation_index])).batch(200)
-    trainDataSet = tf.data.Dataset.from_tensor_slices((data_x[validation_index:], data_y[validation_index:])).batch(200)
-
-    history = model.fit(x=trainDataSet, **fit_args, validation_data=validationDataSet)
+    #trainDataSet = tf.data.Dataset.from_tensor_slices((data_x, data_y)).batch(60)
+    #history = model.fit(trainDataSet, **fit_args)
+    
+    history = model.fit(data_x, data_y, **fit_args)
+    model.save(name + '_final.h5')
+    '''
+    model.save('lwnntest.h5')
+    model.save_weights('lwtnnweights.h5')
+    with open("lwtnnjson.json", 'w') as ofile:
+        ofile.write(model.to_json())
+    '''
+    
 
     hpath = name + '.history.h5'
     logging.info('Writing fit history to %s', hpath)
+
+
     with h5.File(hpath, 'w') as hfile:
         for key, val in history.history.items():
             hfile.create_dataset(key, data=np.array(val))

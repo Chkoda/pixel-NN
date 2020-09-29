@@ -1,18 +1,19 @@
 import logging
 import warnings
-
-import tensorflow as tf
-import tensorflow.keras as keras
-import tensorflow.keras.backend as K
 import numpy as np
+np.random.seed(42)
+
+#import tensorflow as tf
+#import tensorflow.keras as keras
+#import tensorflow.keras.backend as K
+
+import keras
+import keras.backend as K
+
 
 def load_model(path):
     return keras.models.load_model(
-        path,
-        custom_objects={
-            'OffsetAndScale': OffsetAndScale,
-            '_sigmoid2': _sigmoid2
-        }
+        path
     )
 
 
@@ -24,24 +25,23 @@ def simple_model(data_x,
                  learning_rate,
                  weight_decay,
                  momentum,
-                 batch_size,
+                 minibatch_size,
                  loss_function):
 
     input_node = keras.layers.Input((data_x.shape[1],))
-
-    std = np.std(data_x, axis=0, ddof=1)
-    std[np.where(std == 0)] = 1
-    model = OffsetAndScale(
-        offset=-np.mean(data_x, axis=0),
-        scale=1.0/std
+    
+    model = keras.layers.Dense(
+        units=25,
+        kernel_regularizer=keras.regularizers.l2(weight_decay)
     )(input_node)
+    model = keras.layers.Activation(keras.activations.sigmoid)(model)
 
-    for n in structure:
-        model = keras.layers.Dense(
-            units=n,
-            kernel_regularizer=keras.regularizers.l2(weight_decay)
-        )(model)
-        model = hidden_activation(model)
+    model = keras.layers.Dense(
+        units=20,
+        kernel_regularizer=keras.regularizers.l2(weight_decay)
+    )(model)
+    model = keras.layers.Activation(keras.activations.sigmoid)(model)
+
 
     model = keras.layers.Dense(
         units=data_y.shape[1],
@@ -49,13 +49,13 @@ def simple_model(data_x,
     )(model)
 
     if output_activation:
-        model = output_activation(model)
+        model = keras.layers.Activation(keras.activations.sigmoid)(model)
 
     model = keras.models.Model(inputs=input_node, outputs=model)
 
     compile_args = {
         'optimizer': keras.optimizers.SGD(
-            learning_rate=learning_rate,
+            lr=learning_rate,
             momentum=momentum
         ),
         'loss': loss_function
@@ -64,53 +64,29 @@ def simple_model(data_x,
     
 
     fit_args = {
+	'batch_size': minibatch_size,
         'epochs': 1000,
         'callbacks': [
             ThresholdEarlyStopping(verbose=1, min_epochs=50)
-        ]
+        ],
+	'validation_split': 0.1,
     }
 
     return model, compile_args, fit_args, None
 
 
 def _sigmoid2(x):
-    return tf.math.sigmoid(2*x)
-
+    import sys
+    MAXEXP = np.log(sys.float_info.max)
+    return K.switch(
+        K.greater_equal(-2*x, MAXEXP),
+        0.0 * x,
+        1.0 / (1.0 + K.exp(-2*x))
+    )
 
 
 Sigmoid2 = keras.layers.Activation(_sigmoid2)
-
-
-def _config(layer, config):
-    base_config = super(layer.__class__, layer).get_config()
-    conf_dict = dict(base_config.items()).copy()
-    conf_dict.update(dict(config.items()))
-    return conf_dict
-
-
-class OffsetAndScale(keras.layers.Layer):
-    """ (x + offset) * scale """
-
-    def __init__(self, offset, scale, **kwargs):
-        self.offset = offset
-        self.scale = scale
-
-        if isinstance(self.scale, dict) and self.scale['type'] == 'ndarray':
-            self.scale = np.array(self.scale['value']).astype('float32')
-
-        if isinstance(self.offset, dict) and self.offset['type'] == 'ndarray':
-            self.offset = np.array(self.offset['value']).astype('float32')
-
-        super(OffsetAndScale, self).__init__(**kwargs)
-
-    def call(self, x):
-        return (x + self.offset) * self.scale
-
-    def get_config(self):
-        return _config(self, {
-            'offset': self.offset,
-            'scale': self.scale
-        })
+#Sigmoid2 = keras.layers.Activation(keras.activations.sigmoid)
 
 
 class ThresholdEarlyStopping(keras.callbacks.EarlyStopping):

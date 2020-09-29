@@ -60,10 +60,17 @@ def _main():
     logging.info('Loading data from {}'.format(args.input))
 
     with h5.File(args.input, 'r') as data:
+<<<<<<< HEAD
+        data_x = data['input'][()]
+        data_y = data['target'][()]
+        #data_x = data['input'][0:5000]
+        #data_y = data['target'][0:5000]
+=======
         #data_x = data['input'][()]
         #data_y = data['target'][()]
         data_x = data['input'][0:5000]
         data_y = data['target'][0:5000]
+>>>>>>> master
 
 
     #DATA COMES PRESHUFFLED NOW
@@ -86,10 +93,17 @@ def _main():
             logging.info('From kfold {} to {}'.format(sel_folds[0], sel_folds[1]))
             splits = [(train, test) for train, test in splits][sel_folds[0]:sel_folds[1]]
         elif len(args.select_folds) == 1:
+<<<<<<< HEAD
+            sel_fold = int(args.select_folds[0]) - 1
+            fold_no = sel_fold
+            logging.info('kfold {}'.format(sel_fold))
+            splits = [[(train, test) for train, test in splits][sel_fold]]
+=======
             sel_fold = int(args.select_folds[0])
             fold_no = sel_fold
             logging.info('kfold {}'.format(sel_fold))
             splits = [(train, test) for train, test in splits][sel_fold]
+>>>>>>> master
         else:
             raise Exception('Too many command line arguments for select folds!')
     

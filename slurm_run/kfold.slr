@@ -1,0 +1,26 @@
+#!/bin/bash
+#SBATCH -C gpu
+#SBATCH -N 5
+#SBATCH -G 5
+#SBATCH -t 03:00:00
+#SBATCH -q regular
+#SBATCH -J runtest
+#SBATCH -A m1759
+#SBATCH --mail-user=chkoda@uw.edu
+#SBATCH --mail-type=ALL
+
+
+#set up environment
+module load gcc
+module load cmake
+source activate py2theano
+
+
+#run the application:
+cd /global/cfs/cdirs/atlas/achkodrov/pixel-NN/
+
+for i in {1..10}
+do
+	srun --hint=nomultithread -N 1 -G 1 python scripts/kfold.py --input ../data/even_split_shuffled.h5 --model share/reference_number.py --name kfold/theano104_evensplit_kfold --select_folds $i &
+done
+wait

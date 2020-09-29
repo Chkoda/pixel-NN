@@ -1,19 +1,39 @@
 #!/bin/bash
 #SBATCH -C gpu
+<<<<<<< HEAD
+#SBATCH -N 2
+#SBATCH -G 2
+#SBATCH -t 02:30:00
+#SBATCH -q regular
+#SBATCH -J runtest
+#SBATCH -A m1759
+#SBATCH --mail-user=skach@uw.edu
+#SBATCH --mail-type=ALL
+=======
 #SBATCH -N 1
 #SBATCH -G 1
 #SBATCH -t 02:00:00
 #SBATCH -q regular
 #SBATCH -J runtest
 #SBATCH -A m1759
+>>>>>>> master
 
 
 #set up environment
 module load gcc
 module load cmake
+<<<<<<< HEAD
+conda activate py2theano
+=======
 source activate pixelTF
+>>>>>>> master
 
 
 #run the application:
 cd /global/cfs/cdirs/atlas/skach/pixel-NN/
+<<<<<<< HEAD
+srun --hint=nomultithread -N 1 -G 1 python scripts/run_training.py --input data/824_train.h5 --model share/reference_number.py --name modelWeights/824_no_offset
+srun --hint=nomultithread -N 1 -G 1 python scripts/run_training.py --input data/824_train_norm.h5 --model share/reference_number.py --name modelWeights/824_manual_offset
+=======
 srun --hint=nomultithread -N 1 -G 1 python scripts/run_training.py --input data/train.h5 --model share/reference_number.py --name output/817tf
+>>>>>>> master

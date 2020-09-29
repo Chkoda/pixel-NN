@@ -1,9 +1,4 @@
-salloc -C gpu -N 1 -c 1 -G 1 -t 10 -A m1759
-
 cd C:\Users\alexc\Desktop\Projects\pixel-NN-master
-
-python tensorflow/run_training.py --inputData ../data/814_evensplit_equalfrac_train.h5 --outputModel modelWeights/tf_814
-python tensorflow/run_training.py --inputData data/814_evensplit_equalfrac_train.h5 --outputModel tf_model
 
 python scripts/run_training.py --input data/train.h5 --model share/reference_number.py --name theano090
 
