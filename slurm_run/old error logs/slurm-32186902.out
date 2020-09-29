@@ -1,8 +1,0 @@
-/global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/scripts/run_training.py:5: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
-  import imp
-Traceback (most recent call last):
-  File "/global/cfs/cdirs/atlas/achkodrov/pixel-NN-master/scripts/run_training.py", line 10, in <module>
-    import tensorflow.keras as keras
-ModuleNotFoundError: No module named 'tensorflow'
-srun: error: nid00872: task 0: Exited with exit code 1
-srun: Terminating job step 32186902.0

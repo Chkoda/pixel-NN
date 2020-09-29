@@ -1,0 +1,1 @@
+FOR /L %%i IN (1,1,10) DO python scripts/apply.py --input data/test.h5 --type number --output output --model modelWeights/kfold_evensplit/theano104_evensplit_kfold%%i.h5 --name theano_evensplit_kfold%%i
