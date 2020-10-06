@@ -42,7 +42,12 @@ def _apply_model(path, nntype, data_x, data_y):
     model = keras.models.load_model(
         path
     )
-    
+    model.save('output/final/824_training_offset_final.h5')
+    model_json = model.to_json()
+    with open("output/final/824_training_offset_final.json", "w") as json_file:
+        json_file.write(model_json)
+    # serialize weights to HDF5
+    model.save_weights("output/final/824_training_offset_final_weights.h5")
     '''
     model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
     model.compile(**compile_args)
