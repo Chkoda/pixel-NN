@@ -93,8 +93,10 @@ def _main():
 
     logging.info('Loading data from %s', args.input)
     with h5.File(args.input, 'r') as hfile:
-        data_x = hfile['input'][()]
-        data_y = hfile['target'][()]
+        data_x = hfile['input'][0:10000]
+        data_y = hfile['target'][0:10000]
+        # data_x = hfile['input'][()]
+        # data_y = hfile['target'][()]
 
     path = _find_py_file(args.model)
     logging.info('Building model from %s', path)
@@ -115,7 +117,7 @@ def _main():
         #tensorboard_callback,
         keras.callbacks.TerminateOnNaN(),
         keras.callbacks.ModelCheckpoint(
-            name + '.h5',
+            'models/' + name + '.h5',
             save_best_only=True,
             verbose=2
         )

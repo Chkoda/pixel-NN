@@ -29,7 +29,7 @@ logging.basicConfig(
 
 def _build_model(path, data_x, data_y):
     """ Load a model from a .py source """
-    #defm = SourceFileLoader('model_def', path).load_module()
+    # defm = SourceFileLoader('model_def', path).load_module()
     defm = imp.load_source('model_def', path)
     if 'build_model' not in dir(defm):
         raise RuntimeError("build_model() function not defined in '%s'" % path)
@@ -39,21 +39,22 @@ def _build_model(path, data_x, data_y):
 def _apply_model(path, nntype, data_x, data_y):
     logging.info('Loading %s model from %s', nntype, path)
 
-    model = keras.models.load_model(
-        path
-    )
-    model.save('output/final/824_training_offset_final.h5')
-    model_json = model.to_json()
-    with open("output/final/824_training_offset_final.json", "w") as json_file:
-        json_file.write(model_json)
-    # serialize weights to HDF5
-    model.save_weights("output/final/824_training_offset_final_weights.h5")
-    '''
+    # model = keras.models.load_model(
+    #     path
+    # )
+
+    # model.save('output/final/824_training_offset_final.h5')
+    # model_json = model.to_json()
+    # with open("output/final/824_training_offset_final.json", "w") as json_file:
+    #     json_file.write(model_json)
+    # # serialize weights to HDF5
+    # model.save_weights("output/final/824_training_offset_final_weights.h5")
+    
     model, compile_args, _, _ = _build_model("share/reference_number.py", data_x, data_y)
     model.compile(**compile_args)
-    #model.load_weights(path)
+    model.load_weights(path)
     print(model.summary())
-    '''
+    
     '''
     model_json = model.to_json()
     with open("modelWeights/noOffsetScaleconfig.json", "w") as json_file:
@@ -87,7 +88,7 @@ def _get_args():
     args = argparse.ArgumentParser()
     args.add_argument('--input', required=True)
     args.add_argument('--type', required=True, choices=['number', 'pos1', 'pos2', 'pos3'])
-    args.add_argument('--output')
+    args.add_argument('--output', default='output')
     args.add_argument('--name', default='apply_outdata')
     args.add_argument('--ITk', action='store_true')
     args.add_argument('--pitchX', type=float, default=0.05)
@@ -125,9 +126,11 @@ def _main():
 
     preds = []
     for model, nntype in zip(models, types):
-        preds.append(_apply_model(model, nntype, data_x, data_y))
+        preds.append(_apply_model('models/' + model, nntype, data_x, data_y))
 
     if args.output:
+        if not os.path.isdir(args.output):
+            os.mkdir(args.output)
         outpath = args.output
     else:
         outpath = os.path.basename(args.input) + '.NNapplied'
