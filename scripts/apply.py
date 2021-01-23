@@ -133,7 +133,7 @@ def _main():
             os.mkdir(args.output)
         outpath = args.output
     else:
-        outpath = os.path.basename(args.input) + '.NNapplied'
+        outpath = args.model.split('.')[0] + '_applied.h5'
     logging.info('Output path: %s', outpath)
 
     if args.type == 'number':
@@ -151,7 +151,7 @@ def _main():
 
     logging.info('Saving results to %s', outpath)
 
-    with h5.File('{}/{}.h5'.format(outpath, args.name), 'w') as hfile:
+    with h5.File('{}{}'.format(outpath, args.name), 'w') as hfile:
         for key in outdata.dtype.names:
             hfile.create_dataset(
                 key,

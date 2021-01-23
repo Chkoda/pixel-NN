@@ -128,7 +128,7 @@ def doRocs(datas, labels, outpath):
 def _get_args():
     args = argparse.ArgumentParser()
     args.add_argument('--input', default='output/')
-    # args.add_argument('--output', default='')
+    args.add_argument('--output')
 
     grp = args.add_mutually_exclusive_group(required=True)
     grp.add_argument('--model')
@@ -155,11 +155,11 @@ def _main():
         labels = args.labels
     else:
         labels = models
-
+    
     datas = []
 
     for model in models:
-        with h5.File('output/{}.h5'.format(model), 'r') as data:
+        with h5.File('{}{}'.format(args.input, model), 'r') as data:
             data_EC = data['NN_barrelEC'][()]
             data_Layer = data['NN_layer'][()]
             data_number = data['Output_number'][()]
@@ -168,13 +168,17 @@ def _main():
 
         datas.append(doNumber(data_EC, data_Layer, data_number, data_true, data_estimated))
 
-    outpath = ''
-    for i in args.input.split('/')[:-1]:
-        outpath = outpath + i + '/'
-    outpath += 'rocs/'
+    if args.output:
+        outpath = args.output
+    else:
+        outpath = ''
+        for i in args.input.split('/')[:-1]:
+            outpath = outpath + i + '/'
+        outpath += 'rocs/'
 
     if not os.path.isdir(outpath):
         os.mkdir(outpath)
+    logging.info('Output path: %s', outpath)
 
     print('Created ROC plots in {}'.format(outpath))
     doRocs(datas, labels, outpath)
