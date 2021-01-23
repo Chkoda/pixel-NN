@@ -1,4 +1,4 @@
-<img src="documentation/collision.jpg" width=55% align="right"/>
+<img src="documentation/collision.jpg" width=50% align="right"/>
 
 # Pixel Number Network: Classify Particle Multiplicity
 
@@ -26,7 +26,7 @@ The output vector for inference on one cluster is of the shape (1, 3) of probabi
 Step 1: Analysis Object Data (AOD) is stored in root file(s) 'naturalsplit.root' (optional: split AOD into 'ibl.root', 'barrel.root', 'endcap.root') and transformed into hierarchical data format (hdf5) using the following command:
 
 ```
-	python scripts/toh5.py --input data/naturalsplit.root --output data/naturalsplit.h5 --nclusters 15000000 --type number
+python scripts/toh5.py --input data/naturalsplit.root --output data/naturalsplit.h5 --nclusters 15000000 --type number
 ```
 
 Step 2: ```	Split Dataset.ipynb ``` notebook contains utilities like the ability to visualize distribution of labels among the several layers of the pixel detector (under "Exploring Data Structure"). It also creates the training and testing samples, and can draw random samples from the generated .h5 data files and append them all to one file. If the AOD was split this notebook could create a training sample from an equal number of randomly sampled clusters from the three layer files, each with an equal amount of labels (particle multiplicity) per cluster. 
@@ -34,22 +34,22 @@ Step 2: ```	Split Dataset.ipynb ``` notebook contains utilities like the ability
 Step 3: Train the network to classify the number of particles per cluster.
 
 ```
-	python scripts/run_training.py --input data/train.h5 --model share/reference_number.py --name models/numbernetwork_model.h5
+python scripts/run_training.py --input data/train.h5 --model share/reference_number.py --name models/numbernetwork_model.h5
 ``` 
 
 Step 4: Apply the network to testing data. Outputs layer values, predicted labels and true labels into an hdf5 file.
 
 ```
-	python scripts/apply.py --input data/test.h5 --type number --model models/numbernetwork_model.h5 --name output/apply/numbernetwork_model_applied.h5
+python scripts/apply.py --input data/test.h5 --type number --model models/numbernetwork_model.h5 --name output/apply/numbernetwork_model_applied.h5
 ```
 
 Step 5: Plot the receiver operating characteristic curves (ROC curve) of the neural network overall and on each layer. There are two mutually exclusive parameters: the parameter --model accepts one model, or --models for  a list of multiple models superimposed on the same plot. The same is true for the --label/--labels parameters. Output path parameter --output is optional, otherwise plots will be created output one level down from input directory into a folder labeled rocs/.
 
 ```
-	python plot_rocs.py --input output/apply/ --model numbernetwork_model_applied.h5 --label "numbernetwork model"
+python plot_rocs.py --input output/apply/ --model numbernetwork_model_applied.h5 --label "numbernetwork model"
 ```
 ```
-	python plot_rocs.py --input output/apply/ --models nn_applied_1.h5 nn_applied_2.h5 --label "nn_1" "nn_2"
+python plot_rocs.py --input output/apply/ --models nn_applied_1.h5 nn_applied_2.h5 --label "nn_1" "nn_2"
 ```
 
 ### Dependencies
