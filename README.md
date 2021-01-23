@@ -4,9 +4,10 @@
 
 Using deep learning to classify the number of particles passing through a cluster in the pixel detector of ATLAS.
 
-### Data Inputs
+ <img src="documentation/particle_multiplicity.png" width = 40% align="right"/>
 
-* 7x7 discretized matrix of charges obtained from the calibration of time-over-threshold values measured by the pixel sensors and centered on the charge centroid. The charge matrix is flattened into a length 49 vector in row-major order. <img src="documentation/particle_multiplicity.png" width = 40% align="right"/>
+### Data Inputs
+* 7x7 discretized matrix of charges obtained from the calibration of time-over-threshold values measured by the pixel sensors and centered on the charge centroid. The charge matrix is flattened into a length 49 vector in row-major order.
 * 7 length vector of pixel pitches in the local Y direction as the pixel size is not constant in this direction. The positions are measured in a frame of reference local to the pixel sensor considered, in which the local X and Y directions correspond to the transverse and longitudinal directions respectively.
 * 0 or 2 or -2 encoding the pixel detector region (barrel, end cap, or back endcap).
 * 0,1,2, or 3 representing the cylinder (barrel) or disk (endcap) layer. There are three end cap layers for each side and four barrel layers. The 1st barrel layer is the insertable b-layer and has a different construction with finer resolution than the rest of the barrel.
