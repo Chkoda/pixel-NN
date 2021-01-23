@@ -49,7 +49,7 @@ Step 5: Plot the receiver operating characteristic curves (ROC curve) of the neu
 python plot_rocs.py --input output/apply/ --model numbernetwork_model_applied.h5 --label "numbernetwork model"
 ```
 ```
-python plot_rocs.py --input output/apply/ --models nn_applied_1.h5 nn_applied_2.h5 --label "nn_1" "nn_2"
+python plot_rocs.py --input output/apply/ --models nn_applied_1.h5 nn_applied_2.h5 --labels "nn_1" "nn_2"
 ```
 
 ### Dependencies
