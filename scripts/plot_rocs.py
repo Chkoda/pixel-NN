@@ -127,8 +127,8 @@ def doRocs(datas, labels, outpath):
 
 def _get_args():
     args = argparse.ArgumentParser()
-    args.add_argument('--input', default='output/')
-    args.add_argument('--output')
+    args.add_argument('--input', default='')
+    args.add_argument('--output', default='')
 
     grp = args.add_mutually_exclusive_group(required=True)
     grp.add_argument('--model')
@@ -143,7 +143,7 @@ def _get_args():
 def _main():
 
     args = _get_args()
-    
+
     if args.model:
         models = [args.model]
     elif args.models:
@@ -168,20 +168,18 @@ def _main():
 
         datas.append(doNumber(data_EC, data_Layer, data_number, data_true, data_estimated))
 
-    if args.output:
-        outpath = args.output
+    outpath = args.output
+    if len(models) > 1:
+        outpath = outpath + 'multiple model roc curves/'
     else:
-        outpath = ''
-        for i in args.input.split('/')[:-1]:
-            outpath = outpath + i + '/'
-        outpath += 'rocs/'
+        outpath = outpath + models[0].split('/')[-1].split('.')[0] + ' roc curves/'
 
     if not os.path.isdir(outpath):
         os.mkdir(outpath)
-    logging.info('Output path: %s', outpath)
+    print('Output path: {}'.format(outpath))
 
-    print('Created ROC plots in {}'.format(outpath))
     doRocs(datas, labels, outpath)
+    print('Created ROC plots in {}'.format(outpath))
 
 if __name__ == '__main__':
     _main()

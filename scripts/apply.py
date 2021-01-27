@@ -88,8 +88,8 @@ def _get_args():
     args = argparse.ArgumentParser()
     args.add_argument('--input', required=True)
     args.add_argument('--type', required=True, choices=['number', 'pos1', 'pos2', 'pos3'])
-    args.add_argument('--output', default='output')
-    args.add_argument('--name', default='apply_outdata')
+    args.add_argument('--output')
+    args.add_argument('--name')
     args.add_argument('--ITk', action='store_true')
     args.add_argument('--pitchX', type=float, default=0.05)
     args.add_argument('--pitchY', type=float, default=None) # None == variable
@@ -112,8 +112,8 @@ def _main():
     with h5.File(args.input, 'r') as data:
         data_x = data['input'][()]
         data_y = data['target'][()]
-        #data_x = data['input'][:100]
-        #data_y = data['target'][:100]
+        # data_x = data['input'][:100]
+        # data_y = data['target'][:100]
     
     #data = root_numpy.root2array(args.input, stop=args.max_clusters)
 
@@ -126,14 +126,22 @@ def _main():
 
     preds = []
     for model, nntype in zip(models, types):
-        preds.append(_apply_model('models/' + model, nntype, data_x, data_y))
+        preds.append(_apply_model(model, nntype, data_x, data_y))
 
     if args.output:
         if not os.path.isdir(args.output):
             os.mkdir(args.output)
         outpath = args.output
+
+        if args.name:
+            outpath = outpath + args.name
+        else:
+            outpath = outpath + args.model.split('/')[-1].split('.')[0] + '_applied.h5'
     else:
-        outpath = args.model.split('.')[0] + '_applied.h5'
+        if args.name:
+            outpath = args.name
+        else:
+            outpath = args.model.split('/')[-1].split('.')[0] + '_applied.h5'
     logging.info('Output path: %s', outpath)
 
     if args.type == 'number':
@@ -151,7 +159,7 @@ def _main():
 
     logging.info('Saving results to %s', outpath)
 
-    with h5.File('{}{}'.format(outpath, args.name), 'w') as hfile:
+    with h5.File(outpath, 'w') as hfile:
         for key in outdata.dtype.names:
             hfile.create_dataset(
                 key,
